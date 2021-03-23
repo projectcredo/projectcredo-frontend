@@ -1,0 +1,18 @@
+.ref-details {
+  .header {
+    font-weight: bold;
+  }
+  .section {
+    margin-bottom: 10px;
+  }
+}
+
+.authors {
+ color: $gray-light;
+ font-size: 12px;
+
+}
+
+.nothing-yet {
+  @extend .deemphasized;
+}
