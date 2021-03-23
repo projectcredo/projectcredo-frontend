@@ -8,15 +8,19 @@
             <a :href="list.owner" class="timestamp">created by {{ list.owner }}</a>
           </div>
           <div>
-            {{ list.description, 300 | truncate }}
+            {{ list.description | truncate(300) }}
           </div>
           <div v-if="list.last_activities && list.last_activities.length">
-            <div class="list-activity-row" v-for="(activity, index) in list.last_activities"
-              v-show="showMore ? true : index < 3" :key="activity.id">
-              <div class="col-md-1" :class="activity.type"></div>
+            <div
+              v-for="(activity, index) in list.last_activities"
+              v-show="showMore ? true : index < 3"
+              :key="activity.id"
+              class="list-activity-row"
+            >
+              <div class="col-md-1" :class="activity.type" />
               <div class="col-md-11">
-                <a :href="activity.addable_href" v-if="activity.type === 'added'">{{ activity.addable, 150 | truncate }}</a>
-                <span v-if="activity.type == 'commented'">"{{ activity.addable, 150 | truncate }}"</span>
+                <a v-if="activity.type === 'added'" :href="activity.addable_href">{{ activity.addable | truncate(150) }}</a>
+                <span v-if="activity.type == 'commented'">"{{ activity.addable | truncate(150) }}"</span>
                 <span v-if="activity.type == 'created'">This board was created!</span>
                 <div class="timestamp">
                   {{ activity.user }}
@@ -27,25 +31,24 @@
             </div>
             <a
               v-if="list.last_activities.length > 3"
-              v-text="showMore ? 'see less...' : 'see more..'"
               @click="showMore = ! showMore"
-            >
-            </a>
+              v-text="showMore ? 'see less...' : 'see more..'"
+            />
           </div>
           <div class="list-footer">
-            <a class="list-vote" :class="{'toggled': list.liked}" @click="toggleLike(list)" v-show="! likeIsLoading">
+            <a v-show="! likeIsLoading" class="list-vote" :class="{'toggled': list.liked}" @click="toggleLike(list)">
               {{ list.likes }}
             </a>
-            <span class="spinner" v-show="likeIsLoading">
-              <span class="double-bounce1"></span>
-              <span class="double-bounce2"></span>
+            <span v-show="likeIsLoading" class="spinner">
+              <span class="double-bounce1" />
+              <span class="double-bounce2" />
             </span>
-            <a class="list-pin" :class="{'toggled': list.pinned}" @click="togglePin(list)" v-show="! pinIsLoading">
+            <a v-show="! pinIsLoading" class="list-pin" :class="{'toggled': list.pinned}" @click="togglePin(list)">
               {{ list.pins }}
             </a>
-            <span class="spinner" v-show="pinIsLoading">
-              <span class="double-bounce1"></span>
-              <span class="double-bounce2"></span>
+            <span v-show="pinIsLoading" class="spinner">
+              <span class="double-bounce1" />
+              <span class="double-bounce2" />
             </span>
             <span class="comment-count">{{ list.comments_count }}</span>
           </div>
@@ -58,61 +61,50 @@
 <script>
 
 export default {
-  props: ['list', 'signedIn'],
+  props: {
+    list: { type: Object, required: true },
+    signedIn: Boolean,
+  },
 
   data () {
     return {
       likeIsLoading: false,
       pinIsLoading: false,
-      showMore: false
+      showMore: false,
     }
   },
 
   methods: {
-    likeList (list) {
-      var self = this;
-      var params = {
+    async likeList (list) {
+      const params = {
         id: list.id,
-        type: "list"
-      };
-      $.ajax({
-        url: list.like_path + ".json",
-        type: 'POST',
-        data: params
-      })
-      .done(function(){
-        list.liked = true
-        list.likes = list.likes + 1
-        self.likeIsLoading = false
-      })
+        type: 'list',
+      }
+      await this.$axios.post(list.like_path + '.json', params)
 
+      list.liked = true
+      list.likes = list.likes + 1
+      this.likeIsLoading = false
     },
 
-    unlikeList (list) {
-      var self = this;
-      var params = {
+    async unlikeList (list) {
+      const params = {
         id: list.id,
-        type: "list"
-      };
-      $.ajax({
-        url: list.like_path + ".json",
-        type: 'DELETE',
-        data: params
-      })
-      .done(function(){
-        list.liked = false
-        list.likes = list.likes - 1
-        self.likeIsLoading = false
-      });
+        type: 'list',
+      }
+      await this.$axios.delete(list.like_path + '.json', params)
 
+      list.liked = false
+      list.likes = list.likes - 1
+      this.likeIsLoading = false
     },
 
     toggleLike (list) {
-      if(!this.signedIn) {
-        window.location.href = '/users/sign_in';
-      } else if(!this.likeIsLoading) {
+      if (!this.signedIn) {
+        window.location.href = '/users/sign_in'
+      } else if (!this.likeIsLoading) {
         this.likeIsLoading = true
-        if(list.liked) {
+        if (list.liked) {
           this.unlikeList(list)
         } else {
           this.likeList(list)
@@ -120,52 +112,40 @@ export default {
       }
     },
 
-    pinList (list) {
-      var self = this;
-      var params = {
-        id: list.slug
-      };
-      $.ajax({
-        url: "/pins.json",
-        type: 'POST',
-        data: params
-      })
-      .done(function(){
-        list.pinned = true
-        list.pins = list.pins + 1
-        self.pinIsLoading = false
-      })
+    async pinList (list) {
+      const params = {
+        id: list.slug,
+      }
+      await this.$axios.post('/pins.json', params)
+
+      list.pinned = true
+      list.pins = list.pins + 1
+      this.pinIsLoading = false
     },
 
-    unpinList (list) {
-      var self = this;
-      var params = {
-        id: list.slug
-      };
-      $.ajax({
-        url: "/pins/" + list.slug  + ".json",
-        type: 'DELETE',
-        data: params
-      })
-      .done(function(){
-        list.pinned = false
-        list.pins = list.pins - 1
-        self.pinIsLoading = false
-      })
+    async unpinList (list) {
+      const params = {
+        id: list.slug,
+      }
+      await this.$axios.delete('/pins/' + list.slug + '.json', params)
+
+      list.pinned = false
+      list.pins = list.pins - 1
+      this.pinIsLoading = false
     },
 
     togglePin (list) {
-      if(!this.signedIn) {
-        window.location.href = '/users/sign_in';
-      } else if(!this.pinIsLoading) {
+      if (!this.signedIn) {
+        window.location.href = '/users/sign_in'
+      } else if (!this.pinIsLoading) {
         this.pinIsLoading = true
-        if(list.pinned) {
+        if (list.pinned) {
           this.unpinList(list)
         } else {
           this.pinList(list)
         }
       }
-    }
+    },
   },
 }
 </script>

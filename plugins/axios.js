@@ -6,11 +6,11 @@ export default ({ store }) => {
 
   // Request interceptor
   axios.interceptors.request.use((request) => {
-    if (! request.params) {
-      request.params = {}
+    if (!request.headers) {
+      request.headers = {}
     }
-    if (! request.params.api_key) {
-      request.params.api_key = process.env.API_KEY
+    if (!request.headers.api_key) {
+      request.headers.accept = 'application/json'
     }
 
     return request

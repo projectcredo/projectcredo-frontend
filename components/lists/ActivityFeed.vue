@@ -11,7 +11,7 @@
             <button class="filter-btn" :class="{active: ! filterPins}" @click="filterPins = false">
               All Research Activity
             </button>
-            <button class="filter-btn" :class="{active: filterPins}"  @click="filterPins = true">
+            <button class="filter-btn" :class="{active: filterPins}" @click="filterPins = true">
               Your Pins
             </button>
           </div>
@@ -19,14 +19,14 @@
       </div>
       <div class="col-md-9">
         <h4>Recent Board Activity</h4>
-        <list-card
-          v-for="list in lists"
-          v-if="list.pinned || ! filterPins"
-          :key="list.id"
-          :list="list"
-          :signed-in="signedIn"
-        >
-        </list-card>
+        <div v-for="list in lists" :key="list.id">
+          <list-card
+            v-if="list.pinned || ! filterPins"
+            :key="list.id"
+            :list="list"
+            :signed-in="signedIn"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -36,10 +36,13 @@
 import ListCard from './ListCard'
 
 export default {
-  props: ['lists', 'signedIn'],
-
   components: {
     ListCard,
+  },
+
+  props: {
+    lists: { type: Array, required: true },
+    signedIn: Boolean,
   },
 
   data () {
@@ -51,6 +54,5 @@ export default {
   methods: {
     //
   },
-
 }
 </script>
