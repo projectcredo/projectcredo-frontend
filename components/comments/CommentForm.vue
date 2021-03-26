@@ -2,11 +2,11 @@
   <div class="comment-reply">
     <div v-if="signedIn" class="comment-form">
       <div class="form-group">
-        <textarea class="form-control comment-box" v-model="content" placeholder="Write a reply..." :disabled="loading"></textarea>
+        <textarea v-model="content" class="form-control comment-box" placeholder="Write a reply..." :disabled="loading" />
       </div>
       <div class="form-group">
-        <input type="submit" value="Submit" class="btn btn-primary btn-xs" @click.prevent="submit" :disabled="loading">
-        <a class="cancel-link cancel-comment-form" href="#" v-if="['edit', 'reply'].includes(type)" @click.prevent="$emit('cancel')">cancel</a>
+        <input type="submit" value="Submit" class="btn btn-primary btn-xs" :disabled="loading" @click.prevent="submit">
+        <a v-if="['edit', 'reply'].includes(type)" class="cancel-link cancel-comment-form" href="#" @click.prevent="$emit('cancel')">cancel</a>
       </div>
     </div>
     <h4 v-else>
@@ -16,12 +16,11 @@
 </template>
 
 <script>
-import moment from 'moment-mini'
-import axios from '../../services/axios'
+import axios from 'axios'
 import pick from 'lodash-es/pick'
 
 export default {
-  name: 'comment-form',
+  name: 'CommentForm',
 
   props: ['commentableType', 'commentableId', 'parentId', 'signedIn', 'comment', 'type'],
 
@@ -60,12 +59,12 @@ export default {
         request = axios.post('/comments', data)
       }
 
-      request.then(response => {
-          this.$eventHub.$emit(`${this.type}-comment`, Object.assign({}, response.data))
-          this.content = ''
-          this.$emit('cancel')
-        })
-        .catch((e) => (console.error(e)))
+      request.then((response) => {
+        this.$eventHub.$emit(`${this.type}-comment`, Object.assign({}, response.data))
+        this.content = ''
+        this.$emit('cancel')
+      })
+        .catch(e => (console.error(e)))
         .then(response => (this.loading = false))
     },
   },

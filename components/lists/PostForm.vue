@@ -1,7 +1,7 @@
 <template>
   <div class="list-post-form">
-    <textarea v-model="content" ref="textarea" class="lpf-textarea" placeholder="What are you reading?" :disabled="loading"></textarea>
-    <url-preview v-if="url" :info="urlInfo" :loading="loadingUrlInfo" @checked="(c) => checkedPapers = c"></url-preview>
+    <textarea ref="textarea" v-model="content" class="lpf-textarea" placeholder="What are you reading?" :disabled="loading" />
+    <url-preview v-if="url" :info="urlInfo" :loading="loadingUrlInfo" @checked="(c) => checkedPapers = c" />
     <button class="btn btn-primary" :disabled="loadingUrlInfo || loading || ! this.content" @click="submit">
       <span v-if="loading">Posting...</span>
       <span v-else>Post</span>
@@ -14,16 +14,16 @@
 import urlRegex from 'url-regex'
 import debounce from 'lodash-es/debounce'
 import isEmpty from 'lodash-es/isEmpty'
-import axios from '../../services/axios';
-import UrlPreview from './UrlPreview'
+import axios from 'axios'
 import autosize from 'autosize'
+import UrlPreview from './UrlPreview'
 
 export default {
-  props: ['list'],
 
   components: {
     UrlPreview,
   },
+  props: ['list'],
 
   data () {
     return {
@@ -36,20 +36,9 @@ export default {
     }
   },
 
-  watch: {
-    content (val) {
-      if (! this.url) this.findUrl()
-    },
-
-    url (val) {
-      if (val) this.loadUrlInfo()
-      else this.urlInfo = {}
-    },
-  },
-
   computed: {
     article () {
-      if (isEmpty(this.urlInfo)) return null
+      if (isEmpty(this.urlInfo)) { return null }
       return {
         url: this.urlInfo.url,
         title: this.urlInfo.title,
@@ -59,49 +48,59 @@ export default {
     },
   },
 
-  methods: {
-    findUrl: debounce(function () {
-      this.content.replace(urlRegex(), url => {
-        if (! this.url) this.url = url
-      })
-    }, 300),
-
-    loadUrlInfo () {
-      this.loadingUrlInfo = true
-      axios.post('/posts/load-open-graph', {url: this.url})
-        .then(res => {
-          this.urlInfo = res.data
-        })
-        .catch(err => {
-          this.url = ''
-          console.log(err)
-        })
-        .then(() => this.loadingUrlInfo = false)
+  watch: {
+    content (val) {
+      if (!this.url) { this.findUrl() }
     },
 
-    submit () {
-      if (! this.content) return
-
-      this.loading = true
-      axios.post('/posts', {
-        list_id: this.list.id,
-          post: {content: this.content},
-          article: this.article,
-        })
-        .then(res => {
-          this.$emit('post-created', res.data)
-          this.content = ''
-          this.url = ''
-        })
-        .catch(err => {
-          alert(err.message)
-        })
-        .then(() => this.loading = false)
+    url (val) {
+      if (val) { this.loadUrlInfo() } else { this.urlInfo = {} }
     },
   },
 
   mounted () {
     this.$refs.textarea.addEventListener('focus', () => autosize(this.$refs.textarea))
+  },
+
+  methods: {
+    findUrl: debounce(function () {
+      this.content.replace(urlRegex(), (url) => {
+        if (!this.url) { this.url = url }
+      })
+    }, 300),
+
+    loadUrlInfo () {
+      this.loadingUrlInfo = true
+      axios.post('/posts/load-open-graph', { url: this.url })
+        .then((res) => {
+          this.urlInfo = res.data
+        })
+        .catch((err) => {
+          this.url = ''
+          console.log(err)
+        })
+        .then(() => (this.loadingUrlInfo = false))
+    },
+
+    submit () {
+      if (!this.content) { return }
+
+      this.loading = true
+      axios.post('/posts', {
+        list_id: this.list.id,
+        post: { content: this.content },
+        article: this.article,
+      })
+        .then((res) => {
+          this.$emit('post-created', res.data)
+          this.content = ''
+          this.url = ''
+        })
+        .catch((err) => {
+          alert(err.message)
+        })
+        .then(() => (this.loading = false))
+    },
   },
 }
 </script>

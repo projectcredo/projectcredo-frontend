@@ -1,7 +1,9 @@
 <template>
-  <modal :value="show" @input="$emit('hide')" ref="modal" size="md">
+  <modal ref="modal" :value="show" size="md" @input="$emit('hide')">
     <div slot="title">
-      <h4 class="modal-title">Cite Paper</h4>
+      <h4 class="modal-title">
+        Cite Paper
+      </h4>
     </div>
 
     <ul>
@@ -11,14 +13,15 @@
     </ul>
 
     <div slot="footer">
-      <button type="button" class="btn btn-default" @click="$emit('hide')">Close</button>
+      <button type="button" class="btn btn-default" @click="$emit('hide')">
+        Close
+      </button>
     </div>
   </modal>
 </template>
 
 <script>
-import axios from '../../services/axios'
-import {Modal} from 'uiv'
+import { Modal } from 'uiv'
 import uniqBy from 'lodash-es/uniqBy'
 
 export default {
@@ -35,11 +38,11 @@ export default {
   computed: {
     papers () {
       const papers = this.list.posts.reduce((acc, post) => {
-        post.articles.forEach(article => {
+        post.articles.forEach((article) => {
           acc = acc.concat(article.papers)
         })
 
-        return acc;
+        return acc
       }, [])
 
       return uniqBy(papers, 'id')

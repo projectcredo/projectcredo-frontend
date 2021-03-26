@@ -1,3 +1,5 @@
+import webpack from 'webpack'
+
 require('dotenv').config()
 
 export default {
@@ -42,9 +44,18 @@ export default {
   modules: [],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: {
+    vendor: ['jquery'],
+    plugins: [
+      new webpack.ProvidePlugin({
+        $: 'jquery',
+      }),
+    ],
+  },
+
   publicRuntimeConfig: {
     apiUrl: process.env.API_URL,
   },
+
   privateRuntimeConfig: {},
 }

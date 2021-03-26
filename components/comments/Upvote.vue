@@ -1,14 +1,16 @@
 <template>
   <div class="like-form">
-    <button name="button" class="comment-vote" :class="{clicked: comment.voted}" @click.prevent="submit">&nbsp;{{ comment.cached_votes_up }}</button>
+    <button name="button" class="comment-vote" :class="{clicked: comment.voted}" @click.prevent="submit">
+      &nbsp;{{ comment.cached_votes_up }}
+    </button>
   </div>
 </template>
 
 <script>
-import axios from '../../services/axios'
+import axios from 'axios'
 
 export default {
-  name: 'upvote',
+  name: 'Upvote',
 
   props: ['comment'],
 
@@ -18,15 +20,15 @@ export default {
       let request
 
       if (this.comment.voted) {
-        request = axios.delete(url, {data: {id: this.comment.id}})
+        request = axios.delete(url, { data: { id: this.comment.id } })
       } else {
-        request = axios.post(url, {id: this.comment.id})
+        request = axios.post(url, { id: this.comment.id })
       }
 
-      request.then(response => {
-          this.$eventHub.$emit('vote-comment', Object.assign({}, response.data))
-        })
-        .catch((e) => (console.error(e)))
+      request.then((response) => {
+        this.$eventHub.$emit('vote-comment', Object.assign({}, response.data))
+      })
+        .catch(e => (console.error(e)))
     },
   },
 

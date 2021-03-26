@@ -22,5 +22,6 @@ module.exports = {
   globals: {
     window: 'writable',
     mapboxgl: 'writable',
+    $: 'readable',
   },
 }

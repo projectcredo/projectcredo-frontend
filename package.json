@@ -12,12 +12,18 @@
     "test:e2e": "cross-env TEST=e2e ava ./test/e2e/**/*"
   },
   "dependencies": {
+    "autosize": "^4.0.2",
     "axios": "^0.21.1",
     "bootstrap-sass": "^3.4.1",
     "core-js": "^3.9.1",
     "font-awesome": "^4.7.0",
+    "fuse.js": "^6.4.6",
+    "jquery": "^3.6.0",
+    "lodash-es": "^4.17.21",
     "moment-mini": "^2.24.0",
-    "nuxt": "^2.15.3"
+    "nuxt": "^2.15.3",
+    "uiv": "^1.2.4",
+    "url-regex": "^5.0.0"
   },
   "devDependencies": {
     "@ava/babel": "^1.0.1",
