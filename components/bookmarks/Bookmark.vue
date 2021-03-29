@@ -1,14 +1,15 @@
 <template>
   <span>
-    <a :class="[{'toggled': bookmarkable.bookmarked}, 'bookmark']"
-       @click.prevent="toggleBookmark"
-       v-show="! isLoading"
+    <a
+      v-show="! isLoading"
+      :class="[{'toggled': bookmarkable.bookmarked}, 'bookmark']"
+      @click.prevent="toggleBookmark"
     >
-      <i class="fa" :class="{'fa-bookmark-o': ! bookmarkable.bookmarked, 'fa-bookmark': bookmarkable.bookmarked}"></i>
+      <i class="fa" :class="{'fa-bookmark-o': ! bookmarkable.bookmarked, 'fa-bookmark': bookmarkable.bookmarked}" />
     </a>
-    <span class="spinner" v-show="isLoading">
-      <span class="double-bounce1"></span>
-      <span class="double-bounce2"></span>
+    <span v-show="isLoading" class="spinner">
+      <span class="double-bounce1" />
+      <span class="double-bounce2" />
     </span>
     bookmarked by {{ bookmarkable.bookmarks_count }} people
   </span>
@@ -50,8 +51,8 @@ export default {
           type: this.type,
         },
         success: () => {
-          this.bookmarkable.bookmarked = false
-          this.bookmarkable.bookmarks_count = this.bookmarkable.bookmarks_count - 1
+          this.bookmarkable.bookmarked = false // eslint-disable-line
+          this.bookmarkable.bookmarks_count = this.bookmarkable.bookmarks_count - 1 // eslint-disable-line
           this.isLoading = false
         },
       })

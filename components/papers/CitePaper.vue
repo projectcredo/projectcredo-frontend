@@ -1,16 +1,16 @@
 <template>
   <span>
-    <span class="text-capitalize r-cite" v-if="paper" @click.prevent="$parent.$emit('select-paper', paper)">
+    <span v-if="paper" class="text-capitalize r-cite" @click.prevent="$parent.$emit('select-paper', paper)">
       {{ text }}
     </span>
-    <span class="text-capitalize r-cite" v-else>
+    <span v-else class="text-capitalize r-cite">
       [filtered]
     </span>
   </span>
 </template>
 
 <script>
-import {citeText} from './helpers'
+import { citeText } from './helpers'
 
 export default {
   props: ['paper'],

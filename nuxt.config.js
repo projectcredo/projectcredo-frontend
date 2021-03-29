@@ -26,8 +26,10 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    '@/plugins/eventHub.js',
     '@/plugins/filters.js',
     '@/plugins/axios.js',
+    '@/plugins/bootstrap.js',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -45,10 +47,13 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    vendor: ['jquery'],
+    vendor: ['jquery', 'bootstrap-sass'],
     plugins: [
       new webpack.ProvidePlugin({
+        jQuery: 'jquery',
         $: 'jquery',
+        jquery: 'jquery',
+        'window.jQuery': 'jquery',
       }),
     ],
   },

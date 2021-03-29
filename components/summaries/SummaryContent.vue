@@ -1,9 +1,11 @@
 <template>
   <div>
     <div class="summary-content newlines" :class="{truncate: truncate}" @click="truncate = false">
-      <component :is="part.type" v-for="part in contentParts" :paper="part.paper">{{ part.content }}</component>
+      <component :is="part.type" v-for="(part, idx) in contentParts" :key="idx" :paper="part.paper">
+        {{ part.content }}
+      </component>
     </div>
-    <a href="#" class="action-link" v-if="summary.content.length > 250" @click.stop.prevent="truncate = ! truncate">
+    <a v-if="summary.content.length > 250" href="#" class="action-link" @click.stop.prevent="truncate = ! truncate">
       {{ truncate ? 'see more' : 'see less' }}
     </a>
   </div>
@@ -11,14 +13,14 @@
 
 <script>
 import CitePaper from '../papers/CitePaper.vue'
-import {getPaper} from '../papers/helpers'
+import { getPaper } from '../papers/helpers'
 
 export default {
-  props: ['summary', 'list'],
 
   components: {
     CitePaper,
   },
+  props: ['summary', 'list'],
 
   data () {
     return {
@@ -28,10 +30,12 @@ export default {
 
   computed: {
     contentParts () {
-      return this.summary.content.split(/(\[cite_paper id=\d+\])/gi).map(part => {
+      return this.summary.content.split(/(\[cite_paper id=\d+\])/gi).map((part) => {
         const match = /\[cite_paper id=(\d+)\]/gi.exec(part)
-        if (match) return {type: 'cite-paper', id: match[1], paper: getPaper(this.list, match[1])}
-        return {type: 'span', content: part, paper: null}
+        if (match) {
+          return { type: 'cite-paper', id: match[1], paper: getPaper(this.list, match[1]) }
+        }
+        return { type: 'span', content: part, paper: null }
       })
     },
   },
@@ -39,7 +43,7 @@ export default {
   methods: {
     getPaper (id) {
       return getPaper(this.list, id)
-    }
-  }
+    },
+  },
 }
 </script>

@@ -22,7 +22,7 @@
 
 <script>
 import { Modal } from 'uiv'
-import uniqBy from 'lodash-es/uniqBy'
+import uniqBy from 'lodash/uniqBy'
 
 export default {
 

@@ -1,27 +1,45 @@
 <template>
   <div class="list-summary">
-    <div class="list-summary-title">Summary</div>
-    <a href="#" class="pull-right" v-if="list.can_update && ! editing" @click.prevent="edit" :disabled="submitting"><i class="fa fa-pencil"></i></a>
-      <div v-if="editing" class="clearfix">
-        <div ref="content" contenteditable="true"
-             class="form-control mb-5 list-summary-textarea"
-             :disabled="submitting"
-             @blur="saveNewValue"
-             @keydown="editKeydown"
-             @focus="caretToEnd"
-             v-html="editContentParsed"
-        ></div>
-        <a href="#" class="btn btn-success btn-sm" @click.prevent="showCitePaper = true">Cite Paper</a>
-        <div class="pull-right">
-          <a href="#" class="text-small" @click.prevent="editing = false" :disabled="submitting">Cancel</a>
-          <a href="#" class="btn btn-primary btn-sm" @click.prevent="submit" :disabled="submitting">Save</a>
-        </div>
-      </div>
-    <div class="list-summary-body" v-if="summary">
-      <summary-content v-show="! editing" :summary="summary" :list="list" @select-paper="paper => $emit('select-paper', paper)"></summary-content>
+    <div class="list-summary-title">
+      Summary
     </div>
-    <div class="list-summary-body" v-else>No summaries written yet.</div>
-    <cite-paper-modal :list="list" :show="showCitePaper" @hide="showCitePaper = false" @selected="citePaper"></cite-paper-modal>
+    <a v-if="list.can_update && ! editing" href="#" class="pull-right" :disabled="submitting" @click.prevent="edit"><i
+      class="fa fa-pencil"
+    /></a>
+    <div v-if="editing" class="clearfix">
+      <div
+        ref="content"
+        contenteditable="true"
+        class="form-control mb-5 list-summary-textarea"
+        :disabled="submitting"
+        @blur="saveNewValue"
+        @keydown="editKeydown"
+        @focus="caretToEnd"
+        v-html="editContentParsed"
+      />
+      <a href="#" class="btn btn-success btn-sm" @click.prevent="showCitePaper = true">Cite Paper</a>
+      <div class="pull-right">
+        <a href="#" class="text-small" :disabled="submitting" @click.prevent="editing = false">Cancel</a>
+        <a href="#" class="btn btn-primary btn-sm" :disabled="submitting" @click.prevent="submit">Save</a>
+      </div>
+    </div>
+    <div v-if="summary" class="list-summary-body">
+      <summary-content
+        v-show="! editing"
+        :summary="summary"
+        :list="list"
+        @select-paper="paper => $emit('select-paper', paper)"
+      />
+    </div>
+    <div v-else class="list-summary-body">
+      No summaries written yet.
+    </div>
+    <cite-paper-modal
+      :list="list"
+      :show="showCitePaper"
+      @hide="showCitePaper = false"
+      @selected="citePaper"
+    />
   </div>
 </template>
 
@@ -29,15 +47,15 @@
 import axios from 'axios'
 import SummaryContent from '../summaries/SummaryContent'
 import CitePaperModal from '../summaries/CitePaperModal'
-import {citeText, getPaper} from '../papers/helpers'
+import { citeText, getPaper } from '../papers/helpers'
 
 export default {
-  props: ['summary', 'list'],
 
   components: {
     SummaryContent,
     CitePaperModal,
   },
+  props: ['summary', 'list'],
 
   data () {
     return {
@@ -66,7 +84,7 @@ export default {
       text = text.replace(/(<span[^>]+cite_paper-([\w\d_+-]+)[^>]+>[^<]*<\/span>)/gi, (match, tag, id) => {
         return `[cite_paper id=${id}]`
       })
-      text = text.replace(/(<([^>]+)>)/gi ,'')
+      text = text.replace(/(<([^>]+)>)/gi, '')
       text = this.replaceHtmlEntites(text)
 
       this.editContent = text
@@ -84,19 +102,19 @@ export default {
     },
 
     submit () {
-      if (this.submitting) return false
+      if (this.submitting) { return false }
       this.submitting = true
 
       const data = {
         list_id: this.list.id,
-        summary: {content: this.editContent},
+        summary: { content: this.editContent },
       }
 
       ;(this.summary ? axios.put(`/summaries/${this.summary.id}`, data) : axios.post('/summaries', data))
-        .then(res => {
+        .then((res) => {
           this.summary ? this.$emit('summary-updated', res.data) : this.$emit('summary-created', res.data)
         })
-        .catch(err => {
+        .catch((err) => {
           alert(err.message)
         })
         .then(() => {
@@ -135,14 +153,14 @@ export default {
     replaceHtmlEntites (s) {
       const translateRe = /&(nbsp|amp|quot|lt|gt);/g
       const translate = {
-        'nbsp': ' ',
-        'amp': '&',
-        'quot': '\"',
-        'lt': '<',
-        'gt': '>'
+        nbsp: ' ',
+        amp: '&',
+        quot: '"',
+        lt: '<',
+        gt: '>',
       }
 
-      return (s.replace(translateRe, function(match, entity) {
+      return (s.replace(translateRe, function (match, entity) {
         return translate[entity]
       }))
     },

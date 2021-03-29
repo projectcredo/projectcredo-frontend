@@ -12,8 +12,8 @@
 
 <script>
 import urlRegex from 'url-regex'
-import debounce from 'lodash-es/debounce'
-import isEmpty from 'lodash-es/isEmpty'
+import debounce from 'lodash/debounce'
+import isEmpty from 'lodash/isEmpty'
 import axios from 'axios'
 import autosize from 'autosize'
 import UrlPreview from './UrlPreview'
@@ -50,7 +50,7 @@ export default {
 
   watch: {
     content (val) {
-      if (!this.url) { this.findUrl() }
+      if (! this.url) { this.findUrl() }
     },
 
     url (val) {
@@ -65,7 +65,7 @@ export default {
   methods: {
     findUrl: debounce(function () {
       this.content.replace(urlRegex(), (url) => {
-        if (!this.url) { this.url = url }
+        if (! this.url) { this.url = url }
       })
     }, 300),
 
@@ -83,7 +83,7 @@ export default {
     },
 
     submit () {
-      if (!this.content) { return }
+      if (! this.content) { return }
 
       this.loading = true
       axios.post('/posts', {

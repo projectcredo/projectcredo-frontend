@@ -30,8 +30,7 @@
 </template>
 
 <script>
-import debounce from 'lodash-es/debounce'
-import axios from 'axios'
+import debounce from 'lodash/debounce'
 
 export default {
   props: ['editsAllowed', 'list'],

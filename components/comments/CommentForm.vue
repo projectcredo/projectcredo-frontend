@@ -17,7 +17,7 @@
 
 <script>
 import axios from 'axios'
-import pick from 'lodash-es/pick'
+import pick from 'lodash/pick'
 
 export default {
   name: 'CommentForm',

@@ -1,15 +1,16 @@
 <template>
   <div class="comments" :class="commentableType">
-    <comment class="comment"
-             :key="comment.id"
-             v-for="comment in comments"
-             :comment="comment"
-             :signed-in="signedIn"
-             :user-id="userId"
-             :commentable-type="commentableType"
-             :commentable-id="commentableId"
-             @deleted="() => onDeleted(comment)"
-    ></comment>
+    <comment
+      v-for="comment in comments"
+      :key="comment.id"
+      class="comment"
+      :comment="comment"
+      :signed-in="signedIn"
+      :user-id="userId"
+      :commentable-type="commentableType"
+      :commentable-id="commentableId"
+      @deleted="() => onDeleted(comment)"
+    />
   </div>
 </template>
 
@@ -17,7 +18,7 @@
 import Comment from './Comment.vue'
 
 export default {
-  name: 'comments-list',
+  name: 'CommentsList',
 
   components: {
     Comment,
@@ -29,9 +30,9 @@ export default {
     onDeleted (comment) {
       const idx = this.comments.findIndex(c => c.id === comment.id)
       if (idx !== -1) {
-        this.comments.splice(idx, 1)
+        this.comments.splice(idx, 1) // eslint-disable-line
       }
-    }
+    },
   },
 }
 </script>

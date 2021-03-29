@@ -1,12 +1,13 @@
 <template>
   <span>
-    <span class="newlines">{{ comment.content, 250, truncateComment | truncate }}</span>
-    <a class="action-link" v-if="comment.content.length > 250" @click.stop="truncateComment = ! truncateComment">
+    <span v-if="truncateComment" class="newlines">{{ comment.content | truncate(250) }}</span>
+    <span v-else class="newlines">{{ comment.content }}</span>
+    <a v-if="comment.content.length > 250" class="action-link" @click.stop="truncateComment = ! truncateComment">
       {{ truncateComment ? 'see more' : 'see less' }}
     </a>
     <div class="note-details">
       {{ comment.user.username }} · {{ timeAgo }}
-      <slot name="citation"></slot>
+      <slot name="citation" />
     </div>
   </span>
 </template>

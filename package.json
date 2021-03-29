@@ -19,7 +19,7 @@
     "font-awesome": "^4.7.0",
     "fuse.js": "^6.4.6",
     "jquery": "^3.6.0",
-    "lodash-es": "^4.17.21",
+    "lodash": "^4.17.21",
     "moment-mini": "^2.24.0",
     "nuxt": "^2.15.3",
     "uiv": "^1.2.4",
