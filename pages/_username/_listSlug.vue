@@ -43,7 +43,7 @@ export default {
 
   async fetch () {
     const { username, listSlug } = this.$route.params
-    const res = await axios.get(`/${username}/${listSlug}`)
+    const res = await axios.get('/api/lists', { params: { username, slug: listSlug } })
     this.list = res.data
   },
 }

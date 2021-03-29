@@ -29,7 +29,7 @@ export default {
   }),
 
   async fetch () {
-    const res = await axios.get('/')
+    const res = await axios.get('/api/activities')
     this.lists = res.data
   },
 }

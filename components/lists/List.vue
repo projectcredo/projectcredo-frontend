@@ -29,7 +29,7 @@
     <div class="list-tags">
       <a v-for="tag in list.tags" :key="tag.id" href="#" class="label label-tag"><span class="tag-wrap"><span class="tag-name">{{ tag.name }}</span> <span class="tag-count">{{ tag.taggings_count }}</span></span></a>
     </div>
-    <div class="list-owner">
+    <div v-if="list.owner" class="list-owner">
       <div class="list-owner-img">
         <a :href="list.owner.url"><img :src="list.owner.avatar_thumb" alt=""></a>
       </div>

@@ -1,16 +1,21 @@
 import axios from 'axios'
 
-export default ({ store }) => {
-  axios.defaults.baseURL = process.env.API_URL
+export default ({ store, $config }) => {
+  axios.defaults.baseURL = $config.apiUrl
   axios.defaults.params = {}
 
   // Request interceptor
   axios.interceptors.request.use((request) => {
-    if (!request.headers) {
+    if (! request.headers) {
       request.headers = {}
     }
-    if (!request.headers.api_key) {
+    if (! request.headers.api_key) {
       request.headers.accept = 'application/json'
+    }
+    if (store.state.auth.token) {
+      request.headers['access-token'] = store.state.auth.token
+      request.headers.client = store.state.auth.client
+      request.headers.uid = store.state.auth.uid
     }
 
     return request

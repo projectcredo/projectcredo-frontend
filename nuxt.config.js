@@ -30,6 +30,7 @@ export default {
     '@/plugins/filters.js',
     '@/plugins/axios.js',
     '@/plugins/bootstrap.js',
+    '@/plugins/legacy.js',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

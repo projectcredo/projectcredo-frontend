@@ -85,12 +85,12 @@
         </ul>
         <ul v-else class="nav navbar-nav navbar-right">
           <li>
-            <nuxt-link to="signin">
+            <nuxt-link to="/users/sign_in">
               Sign in
             </nuxt-link>
           </li>
           <li>
-            <nuxt-link to="signup">
+            <nuxt-link to="/users/sign_up">
               Sign up
             </nuxt-link>
           </li>
