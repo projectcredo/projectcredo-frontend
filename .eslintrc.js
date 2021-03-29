@@ -30,5 +30,6 @@ module.exports = {
     window: 'writable',
     mapboxgl: 'writable',
     $: 'readable',
+    jQuery: 'readable',
   },
 }
