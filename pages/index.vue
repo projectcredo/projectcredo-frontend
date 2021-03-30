@@ -15,13 +15,14 @@
       <div v-if="$fetchState.pending" class="text-center">
         Loading...
       </div>
-      <activity-feed :lists="lists" />
+      <activity-feed v-if="lists.length" :lists="lists" :signed-in="!! user" />
     </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import { mapState } from 'vuex'
 import ActivityFeed from '../components/lists/ActivityFeed'
 
 export default {
@@ -34,6 +35,12 @@ export default {
   async fetch () {
     const res = await axios.get('/api/activities')
     this.lists = res.data
+  },
+
+  computed: {
+    ...mapState({
+      user: s => s.auth.user,
+    }),
   },
 }
 </script>

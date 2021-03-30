@@ -16,6 +16,7 @@ export default ({ store, $config }) => {
       request.headers['access-token'] = store.state.auth.token
       request.headers.client = store.state.auth.client
       request.headers.uid = store.state.auth.uid
+      request.headers['token-type'] = store.state.auth.tokenType
     }
 
     return request

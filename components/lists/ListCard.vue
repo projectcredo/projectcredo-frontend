@@ -36,14 +36,14 @@
             />
           </div>
           <div class="list-footer">
-            <a v-show="! likeIsLoading" class="list-vote" :class="{'toggled': list.liked}" @click="toggleLike(list)">
+            <a v-show="! likeIsLoading" role="button" class="list-vote" :class="{'toggled': list.liked}" @click="toggleLike(list)">
               {{ list.likes }}
             </a>
             <span v-show="likeIsLoading" class="spinner">
               <span class="double-bounce1" />
               <span class="double-bounce2" />
             </span>
-            <a v-show="! pinIsLoading" class="list-pin" :class="{'toggled': list.pinned}" @click="togglePin(list)">
+            <a v-show="! pinIsLoading" role="button" class="list-pin" :class="{'toggled': list.pinned}" @click="togglePin(list)">
               {{ list.pins }}
             </a>
             <span v-show="pinIsLoading" class="spinner">
@@ -59,6 +59,8 @@
 </template>
 
 <script>
+
+import axios from 'axios'
 
 export default {
   props: {
@@ -76,11 +78,7 @@ export default {
 
   methods: {
     async likeList (list) {
-      const params = {
-        id: list.id,
-        type: 'list',
-      }
-      await this.$axios.post(list.like_path + '.json', params)
+      await axios.post('/api/votes', { id: list.id })
 
       list.liked = true
       list.likes = list.likes + 1
@@ -88,11 +86,9 @@ export default {
     },
 
     async unlikeList (list) {
-      const params = {
-        id: list.id,
-        type: 'list',
-      }
-      await this.$axios.delete(list.like_path + '.json', params)
+      await axios.delete('/api/votes', {
+        params: { id: list.id },
+      })
 
       list.liked = false
       list.likes = list.likes - 1
@@ -101,7 +97,7 @@ export default {
 
     toggleLike (list) {
       if (! this.signedIn) {
-        window.location.href = '/users/sign_in'
+        this.$router.push('/users/sign_in')
       } else if (! this.likeIsLoading) {
         this.likeIsLoading = true
         if (list.liked) {
@@ -113,10 +109,7 @@ export default {
     },
 
     async pinList (list) {
-      const params = {
-        id: list.slug,
-      }
-      await this.$axios.post('/pins.json', params)
+      await axios.post('/api/pins', { id: list.slug })
 
       list.pinned = true
       list.pins = list.pins + 1
@@ -124,10 +117,7 @@ export default {
     },
 
     async unpinList (list) {
-      const params = {
-        id: list.slug,
-      }
-      await this.$axios.delete('/pins/' + list.slug + '.json', params)
+      await axios.delete(`/api/pins/${list.slug}`, { params: { id: list.slug } })
 
       list.pinned = false
       list.pins = list.pins - 1
@@ -136,7 +126,7 @@ export default {
 
     togglePin (list) {
       if (! this.signedIn) {
-        window.location.href = '/users/sign_in'
+        this.$router.push('/users/sign_in')
       } else if (! this.pinIsLoading) {
         this.pinIsLoading = true
         if (list.pinned) {

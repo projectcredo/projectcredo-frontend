@@ -5,6 +5,7 @@ export const state = () => ({
   client: null,
   expiry: null,
   uid: null,
+  tokenType: null,
   user: null,
   loading: false,
 })
@@ -20,6 +21,7 @@ export const actions = {
         client: res.headers.client,
         expiry: res.headers.expiry,
         uid: res.headers.uid,
+        tokenType: res.headers['token-type'],
       })
     } catch (e) {
       commit('SIGNIN_ERR')
@@ -37,6 +39,7 @@ export const actions = {
         client: res.headers.client,
         expiry: res.headers.expiry,
         uid: res.headers.uid,
+        tokenType: res.headers['token-type'],
       })
     } catch (e) {
       commit('SIGNUP_ERR')
@@ -54,13 +57,14 @@ export const mutations = {
     state.loading = true
   },
 
-  SIGNIN_OK (state, { user, token, client, expiry, uid }) {
+  SIGNIN_OK (state, { user, token, client, expiry, uid, tokenType }) {
     state.loading = false
     state.user = user
     state.token = token
     state.client = client
     state.expiry = expiry
     state.uid = uid
+    state.tokenType = tokenType
   },
 
   SIGNIN_ERR (state) {
@@ -71,13 +75,14 @@ export const mutations = {
     state.loading = true
   },
 
-  SIGNUP_OK (state, { user, token, client, expiry, uid }) {
+  SIGNUP_OK (state, { user, token, client, expiry, uid, tokenType }) {
     state.loading = false
     state.user = user
     state.token = token
     state.client = client
     state.expiry = expiry
     state.uid = uid
+    state.tokenType = tokenType
   },
 
   SIGNUP_ERR (state) {
