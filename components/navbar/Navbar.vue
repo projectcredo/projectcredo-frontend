@@ -3,13 +3,13 @@
     <div class="container-fluid">
       <div class="navbar-header">
         <button
-          v-if="currentUser"
+          v-if="user"
           type="button"
           class="navbar-toggle collapsed navbar-avatar-toggle"
           data-toggle="collapse"
           data-target="#navbar-collapse"
         >
-          <img :src="currentUser.avatar" alt="">
+          <img :src="user.avatar" alt="">
         </button>
         <button v-else type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
           <span class="sr-only">Toggle navigation</span>
@@ -46,7 +46,7 @@
 
         TODO notifications
 
-        <ul v-if="currentUser" class="nav navbar-nav navbar-right">
+        <ul v-if="user" class="nav navbar-nav navbar-right">
           <li class="dropdown">
             <a
               data-toggle="dropdown"
@@ -54,8 +54,8 @@
               class="navbar-avatar dropdown-toggle"
               title="<%= current_user.username %>"
             >
-              <span class="avatar-round-image"><img :src="currentUser.avatar" alt=""></span>
-              <span class="hidden-sm hidden-md hidden-lg">{{ currentUser.username }}</span>
+              <span class="avatar-round-image"><img :src="user.avatar" alt=""></span>
+              <span class="hidden-sm hidden-md hidden-lg">{{ user.username }}</span>
               <i class="caret" />
             </a>
             <ul class="dropdown-menu">
@@ -76,9 +76,9 @@
               </li>
               <li class="divider" />
               <li>
-                <nuxt-link to="signuot">
+                <a role="button" @click="onSignOut">
                   <i class="fa fa-sign-out" /> Sign out
-                </nuxt-link>
+                </a>
               </li>
             </ul>
           </li>
@@ -121,9 +121,24 @@
 </template>
 
 <script>
+import { mapActions, mapState } from 'vuex'
+
 export default {
-  data: () => ({
-    currentUser: null,
-  }),
+  computed: {
+    ...mapState({
+      user: s => s.auth.user,
+    }),
+  },
+
+  methods: {
+    ...mapActions({
+      signOut: 'auth/signOut',
+    }),
+
+    async onSignOut () {
+      await this.signOut()
+      this.$router.push('/')
+    },
+  },
 }
 </script>

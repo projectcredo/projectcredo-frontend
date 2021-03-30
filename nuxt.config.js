@@ -29,6 +29,7 @@ export default {
     '@/plugins/eventHub.js',
     '@/plugins/filters.js',
     '@/plugins/axios.js',
+    '@/plugins/vuex-persist.client.js',
     '@/plugins/bootstrap.js',
     '@/plugins/legacy.js',
   ],

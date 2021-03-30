@@ -3,9 +3,9 @@
     <div class="row">
       <div class="col-md-3">
         <div v-if="signedIn">
-          <a href="/lists/new" class="btn panel panel-default new-list">
+          <nuxt-link to="/lists/new" class="btn panel panel-default new-list">
             <h3>Create a new<br> board</h3>
-          </a>
+          </nuxt-link>
           <div class="index-filters">
             <h4>Filters</h4>
             <button class="filter-btn" :class="{active: ! filterPins}" @click="filterPins = false">

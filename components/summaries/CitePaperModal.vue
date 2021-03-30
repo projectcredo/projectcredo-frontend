@@ -37,6 +37,8 @@ export default {
 
   computed: {
     papers () {
+      if (! this.list.posts) { return [] }
+
       const papers = this.list.posts.reduce((acc, post) => {
         post.articles.forEach((article) => {
           acc = acc.concat(article.papers)

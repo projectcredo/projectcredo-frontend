@@ -1,6 +1,11 @@
 <template>
   <div class="container">
-    <div class="row list-show">
+    123
+    <div v-if="$fetchState.pending" class="text-center">
+      Loading...
+    </div>
+
+    <div v-if="list.id" class="row list-show">
       <div class="col-md-8">
         <list :list="list" :current-user="currentUser" />
       </div>
@@ -43,6 +48,14 @@ export default {
 
   async fetch () {
     const { username, listSlug } = this.$route.params
+    if (! listSlug) {
+      // set status code on server and
+      if (process.server) {
+        this.$nuxt.context.res.statusCode = 404
+      }
+      // use throw new Error()
+      throw new Error('Post not found')
+    }
     const res = await axios.get('/api/lists', { params: { username, slug: listSlug } })
     this.list = res.data
   },

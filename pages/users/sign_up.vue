@@ -6,8 +6,8 @@
     <div class="row">
       <div class="col-md-8 col-md-push-2">
         <div class="form-group">
-          <a role="button" class="btn btn-fb">Sign in with Facebook</a>
-          <a role="button" class="btn btn-google">Sign in with Google</a>
+          <a role="button" class="btn btn-fb">Sign up with Facebook</a>
+          <a role="button" class="btn btn-google">Sign up with Google</a>
         </div>
 
         <p>Or</p>
@@ -21,21 +21,33 @@
         </div>
 
         <div class="form-group">
-          <label for="user_login">Login</label><br>
-          <input id="user_login" v-model="form.email" autofocus="autofocus" class="form-control" type="text">
+          <label for="user_email">Email</label><br>
+          <input id="user_email" v-model="form.email" autofocus="autofocus" class="form-control" type="email">
         </div>
 
         <div class="form-group">
-          <label for="user_password">Password</label><br>
+          <label for="user_username">Username</label><br>
+          <input id="user_username" v-model="form.username" class="form-control" type="text">
+        </div>
+
+        <div class="form-group">
+          <label for="user_password">Password</label>
+          <em>(6 characters minimum)</em>
+          <br>
           <input id="user_password" v-model="form.password" autocomplete="off" class="form-control" type="password">
         </div>
 
-        <div class="form-group actions">
-          <a role="button" class="btn btn-primary" :disabled="loading" @click="submit">Log in</a>
+        <div class="form-group">
+          <label for="user_password_confirmation">Password confirmation</label><br>
+          <input id="user_password_confirmation" v-model="form.password_confirmation" autocomplete="off" class="form-control" type="password">
         </div>
 
-        <nuxt-link to="/users/sign_up">
-          Sign up
+        <div class="form-group actions">
+          <a role="button" class="btn btn-primary" :disabled="loading" @click="submit">Sign up</a>
+        </div>
+
+        <nuxt-link to="/users/sign_in">
+          Sign in
         </nuxt-link>
         <br>
         <nuxt-link to="/users/password/new">
@@ -54,13 +66,17 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
+import isObject from 'lodash/isObject'
 
 export default {
 
   data: () => ({
     form: {
       email: '',
+      username: '',
       password: '',
+      password_confirmation: '',
+      confirm_success_url: '',
     },
     errors: [],
   }),
@@ -71,20 +87,24 @@ export default {
     }),
   },
 
+  mounted () {
+    this.form.confirm_success_url = window.location.href
+  },
+
   methods: {
     ...mapActions({
-      signIn: 'auth/signIn',
+      signUp: 'auth/signUp',
     }),
 
     async submit () {
       if (this.loading) { return }
       this.errors = []
       try {
-        await this.signIn(this.form)
+        await this.signUp(this.form)
         this.$router.replace('/')
       } catch (e) {
-        if (e.response && e.response.status === 401) {
-          this.errors = (e.response.data && e.response.data.errors) || []
+        if (e.response && e.response.status === 422) {
+          this.errors = isObject(e.response.data.errors) ? e.response.data.errors.full_messages : e.response.data.errors
         } else {
           throw e
         }

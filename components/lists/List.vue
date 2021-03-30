@@ -145,8 +145,10 @@ export default {
       placement: 'auto top',
       html: true,
     })
-    this.posts = this.list.posts.slice()
-    this.summaries = this.list.summaries.slice()
+    if (this.list) {
+      this.posts = this.list.posts.slice()
+      this.summaries = this.list.summaries.slice()
+    }
   },
 
   methods: {

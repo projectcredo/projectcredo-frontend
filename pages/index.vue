@@ -12,6 +12,9 @@
     </div>
 
     <div class="container">
+      <div v-if="$fetchState.pending" class="text-center">
+        Loading...
+      </div>
       <activity-feed :lists="lists" />
     </div>
   </div>

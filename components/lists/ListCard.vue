@@ -4,8 +4,8 @@
       <div class="panel panel-default">
         <div class="panel-body">
           <div class="list-title">
-            <a :href="list.link">{{ list.name }}</a>
-            <a :href="list.owner" class="timestamp">created by {{ list.owner }}</a>
+            <a :href="`/${list.owner}/${list.slug}`">{{ list.name }}</a>
+            <a :href="`/${list.owner}`" class="timestamp">created by {{ list.owner }}</a>
           </div>
           <div>
             {{ list.description | truncate(300) }}
@@ -100,9 +100,9 @@ export default {
     },
 
     toggleLike (list) {
-      if (!this.signedIn) {
+      if (! this.signedIn) {
         window.location.href = '/users/sign_in'
-      } else if (!this.likeIsLoading) {
+      } else if (! this.likeIsLoading) {
         this.likeIsLoading = true
         if (list.liked) {
           this.unlikeList(list)
@@ -135,9 +135,9 @@ export default {
     },
 
     togglePin (list) {
-      if (!this.signedIn) {
+      if (! this.signedIn) {
         window.location.href = '/users/sign_in'
-      } else if (!this.pinIsLoading) {
+      } else if (! this.pinIsLoading) {
         this.pinIsLoading = true
         if (list.pinned) {
           this.unpinList(list)
