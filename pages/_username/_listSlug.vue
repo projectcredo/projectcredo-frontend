@@ -7,11 +7,11 @@
 
     <div v-if="list.id" class="row list-show">
       <div class="col-md-8">
-        <list :list="list" :current-user="currentUser" />
+        <list :list="list" :current-user="user" />
       </div>
       <div class="col-md-4">
         <div class="edit-section">
-          <a v-if="currentUser" href="" class="edit-list-btn">Edit this board</a>
+          <a v-if="user" href="" class="edit-list-btn">Edit this board</a>
         </div>
 
         <div class="list-section">
@@ -22,8 +22,8 @@
             <comments
               commentable-type="List"
               :commentable-id="list.id"
-              :signed-in="currentUser"
-              :user-id="currentUser && currentUser.id"
+              :signed-in="user"
+              :user-id="user && user.id"
               :comments="list.comments"
             />
           </div>
@@ -35,6 +35,7 @@
 
 <script>
 import axios from 'axios'
+import { mapState } from 'vuex'
 import List from '../../components/lists/List'
 import Comments from '../../components/comments/Comments'
 
@@ -43,7 +44,6 @@ export default {
 
   data: () => ({
     list: {},
-    currentUser: null,
   }),
 
   async fetch () {
@@ -58,6 +58,12 @@ export default {
     }
     const res = await axios.get('/api/lists', { params: { username, slug: listSlug } })
     this.list = res.data
+  },
+
+  computed: {
+    ...mapState({
+      user: s => s.auth.user,
+    }),
   },
 }
 </script>

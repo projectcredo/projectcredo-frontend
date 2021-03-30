@@ -36,8 +36,16 @@
               aria-expanded="false"
             >About <span class="caret" /></a>
             <ul class="dropdown-menu">
-              <li><a href="">Our Mission</a></li>
-              <li><a href="">How To</a></li>
+              <li>
+                <nuxt-link to="/about">
+                  Our Mission
+                </nuxt-link>
+              </li>
+              <li>
+                <nuxt-link to="/how-to">
+                  How To
+                </nuxt-link>
+              </li>
               <li role="separator" class="divider" />
               <li><a href="https://www.patreon.com/projectcredo" target="_blank">Sponsor Us</a></li>
             </ul>
