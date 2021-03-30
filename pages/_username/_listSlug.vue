@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    123
     <div v-if="$fetchState.pending" class="text-center">
       Loading...
     </div>
