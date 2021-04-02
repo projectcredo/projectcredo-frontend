@@ -5,11 +5,11 @@
     </div>
     <div v-if="profile">
       <div class="user-profile-heading">
-        <div class="uph-cover" :style="`background-image: url(${profile.cover})`" />
+        <div class="uph-cover" :style="`background-image: url(${profile.cover && profile.cover.cover})`" />
         <div class="container">
           <div class="uph-info">
             <div class="uph-avatar">
-              <img :src="profile.avatar_medium" alt="">
+              <img :src="profile.avatar && profile.avatar.medium" alt="">
             </div>
             <h2 class="uph-username">
               {{ profile.full_name || profile.username }}

@@ -9,7 +9,7 @@
           data-toggle="collapse"
           data-target="#navbar-collapse"
         >
-          <img :src="user.avatar_thumb" alt="">
+          <img :src="user.avatar.thumb" alt="">
         </button>
         <button v-else type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
           <span class="sr-only">Toggle navigation</span>
@@ -62,7 +62,7 @@
               class="navbar-avatar dropdown-toggle"
               title="<%= current_user.username %>"
             >
-              <span class="avatar-round-image"><img :src="user.avatar_thumb" alt=""></span>
+              <span class="avatar-round-image"><img :src="user.avatar.thumb" alt=""></span>
               <span class="hidden-sm hidden-md hidden-lg">{{ user.username }}</span>
               <i class="caret" />
             </a>
@@ -73,12 +73,12 @@
                 </nuxt-link>
               </li>
               <li>
-                <nuxt-link to="profile/edit">
+                <nuxt-link to="/users/edit">
                   <i class="fa fa-pencil" /> Edit account
                 </nuxt-link>
               </li>
               <li>
-                <nuxt-link to="bookmarks">
+                <nuxt-link to="/bookmarks">
                   <i class="fa fa-bookmark" /> Bookmarks
                 </nuxt-link>
               </li>

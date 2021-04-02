@@ -93,4 +93,9 @@ export const mutations = {
     state.user = null
     state.token = null
   },
+
+  UPDATE_USER (state, user) {
+    state.user = user
+    state.uid = user.email
+  },
 }

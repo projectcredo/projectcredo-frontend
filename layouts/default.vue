@@ -1,14 +1,16 @@
 <template>
   <div>
-    <navbar></navbar>
+    <notifications />
+    <navbar />
     <Nuxt />
   </div>
 </template>
 
 <script>
 import Navbar from '@/components/navbar/Navbar'
+import Notifications from '../components/layout/Notifications'
 
 export default {
-  components: { Navbar },
+  components: { Notifications, Navbar },
 }
 </script>

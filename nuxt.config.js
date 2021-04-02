@@ -32,6 +32,7 @@ export default {
     '@/plugins/vuex-persist.client.js',
     '@/plugins/bootstrap.js',
     '@/plugins/legacy.js',
+    '@/plugins/notifications.client.js',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -55,6 +56,7 @@ export default {
   build: {
     extractCSS: true,
     vendor: ['jquery', 'bootstrap-sass'],
+    transpile: ['vt-notifications'],
     plugins: [
       new webpack.ProvidePlugin({
         jQuery: 'jquery',
