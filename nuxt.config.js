@@ -47,6 +47,10 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [],
 
+  serverMiddleware: [
+    { path: '/system', handler: '~/server-middleware/dev-local-files.js' },
+  ],
+
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     extractCSS: true,
