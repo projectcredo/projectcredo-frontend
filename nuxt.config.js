@@ -56,7 +56,7 @@ export default {
   build: {
     extractCSS: true,
     vendor: ['jquery', 'bootstrap-sass'],
-    transpile: ['vt-notifications'],
+    transpile: ['vt-notifications', 'vue-multiselect'],
     plugins: [
       new webpack.ProvidePlugin({
         jQuery: 'jquery',

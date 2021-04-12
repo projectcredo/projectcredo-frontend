@@ -172,10 +172,6 @@ export default {
       this.form = pick(data, ['first_name', 'last_name', 'username', 'email', 'about', 'country', 'city', 'website'])
     },
 
-    getErrors (field) {
-      return this.errors[field] || []
-    },
-
     validate () {
       if (this.form.password !== this.form.password_confirmation) {
         this.errors = { full_messages: ['Password confirmation donesn\'t match'] }
