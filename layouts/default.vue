@@ -1,6 +1,8 @@
 <template>
   <div>
-    <notifications />
+    <client-only>
+      <notifications />
+    </client-only>
     <navbar />
     <Nuxt />
   </div>

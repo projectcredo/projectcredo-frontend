@@ -10,7 +10,9 @@
       </div>
       <div class="col-md-4">
         <div class="edit-section">
-          <a v-if="user" href="" class="edit-list-btn">Edit this board</a>
+          <client-only>
+            <a v-if="user" href="" class="edit-list-btn">Edit this board</a>
+          </client-only>
         </div>
 
         <div class="list-section">
@@ -53,7 +55,7 @@ export default {
         this.$nuxt.context.res.statusCode = 404
       }
       // use throw new Error()
-      throw new Error('Post not found')
+      throw new Error('Page not found')
     }
     const res = await axios.get('/api/lists', { params: { username, slug: listSlug } })
     this.list = res.data

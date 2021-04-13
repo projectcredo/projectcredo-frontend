@@ -6,42 +6,50 @@
       <strong><a :href="comment.user.url">{{ comment.user.username }}</a></strong>
       on {{ formatDate(comment.updated_at) }}
     </p>
-    <comment-form
-      v-if="showEdit"
-      :signed-in="signedIn"
-      :commentable-type="commentableType"
-      :commentable-id="commentableId"
-      :parent-id="comment.id"
-      :comment="comment"
-      type="edit"
-      @cancel="showEdit = false"
-    />
-    <span v-else class="content"><p>{{ comment.content }}</p></span>
+    <client-only>
+      <comment-form
+        v-if="showEdit"
+        :signed-in="signedIn"
+        :commentable-type="commentableType"
+        :commentable-id="commentableId"
+        :parent-id="comment.id"
+        :comment="comment"
+        type="edit"
+        @cancel="showEdit = false"
+      />
+    </client-only>
+    <div v-if="!showEdit" class="content">
+      <p>{{ comment.content }}</p>
+    </div>
 
-    <ul v-if="signedIn">
-      <li>
-        <upvote :comment="comment" />
-      </li>
-      <li><a class="toggle-reply active-link btn-xs" href="#" @click.prevent="showReply = ! showReply">reply</a></li>
-      <li v-if="comment.user_id === userId">
-        <a class="active-link btn-xs cursor-pointer" @click.prevent="showEdit = ! showEdit">edit</a>
-      </li>
-      <li v-if="comment.user_id === userId">
-        <span v-if="removing">deleting...</span>
-        <a v-else class="text-danger small cursor-pointer" @click.prevent="removeComment">delete</a>
-      </li>
-      <li />
-    </ul>
+    <client-only>
+      <ul v-if="signedIn">
+        <li>
+          <upvote :comment="comment" />
+        </li>
+        <li><a class="toggle-reply active-link btn-xs" href="#" @click.prevent="showReply = ! showReply">reply</a></li>
+        <li v-if="comment.user_id === userId">
+          <a class="active-link btn-xs cursor-pointer" @click.prevent="showEdit = ! showEdit">edit</a>
+        </li>
+        <li v-if="comment.user_id === userId">
+          <span v-if="removing">deleting...</span>
+          <a v-else class="text-danger small cursor-pointer" @click.prevent="removeComment">delete</a>
+        </li>
+        <li />
+      </ul>
+    </client-only>
 
-    <comment-form
-      v-if="showReply"
-      :signed-in="signedIn"
-      :commentable-type="commentableType"
-      :commentable-id="commentableId"
-      :parent-id="comment.id"
-      type="reply"
-      @cancel="showReply = false"
-    />
+    <client-only>
+      <comment-form
+        v-if="showReply"
+        :signed-in="signedIn"
+        :commentable-type="commentableType"
+        :commentable-id="commentableId"
+        :parent-id="comment.id"
+        type="reply"
+        @cancel="showReply = false"
+      />
+    </client-only>
 
     <comments-list :signed-in="signedIn" :user-id="userId" :comments="comment.nested_comments" />
   </div>
@@ -86,7 +94,7 @@ export default {
     },
 
     removeComment () {
-      if (!confirm('Are you sure?')) { return }
+      if (! confirm('Are you sure?')) { return }
 
       this.removing = true
       try {

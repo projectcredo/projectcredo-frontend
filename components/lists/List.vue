@@ -8,19 +8,21 @@
         <span class="list-title-text">
           {{ list.name }}
         </span>
-        <span v-if="currentUser" class="list-title-star">
-          <i
-            v-if="! pinIsLoading"
-            title="Pin / unpin the list"
-            class="fa"
-            :class="{'fa-star': list.pinned, 'fa-star-o': ! list.pinned}"
-            @click="togglePin"
-          />
-          <span v-if="pinIsLoading" class="spinner">
-            <span class="double-bounce1" />
-            <span class="double-bounce2" />
+        <client-only>
+          <span v-if="currentUser" class="list-title-star">
+            <i
+              v-if="! pinIsLoading"
+              title="Pin / unpin the list"
+              class="fa"
+              :class="{'fa-star': list.pinned, 'fa-star-o': ! list.pinned}"
+              @click="togglePin"
+            />
+            <span v-if="pinIsLoading" class="spinner">
+              <span class="double-bounce1" />
+              <span class="double-bounce2" />
+            </span>
           </span>
-        </span>
+        </client-only>
       </h1>
     </div>
     <div class="list-description">

@@ -1,12 +1,14 @@
 <template>
   <div>
-    <comment-form
-      :signed-in="signedIn"
-      :commentable-type="commentableType"
-      :commentable-id="commentableId"
-      :parent-id="null"
-      type="new"
-    />
+    <client-only>
+      <comment-form
+        :signed-in="signedIn"
+        :commentable-type="commentableType"
+        :commentable-id="commentableId"
+        :parent-id="null"
+        type="new"
+      />
+    </client-only>
     <comments-list
       :signed-in="signedIn"
       :user-id="userId"

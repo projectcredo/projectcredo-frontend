@@ -42,6 +42,8 @@ export default {
     bookmarks: [],
   }),
 
+  fetchOnServer: false,
+
   async fetch () {
     const res = await axios.get('/api/bookmarks')
     this.bookmarks = res.data

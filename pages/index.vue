@@ -33,6 +33,9 @@ export default {
   }),
 
   async fetch () {
+    console.log('Running fetch')
+    console.log(process.server ? 'On server' : 'On client')
+
     const res = await axios.get('/api/activities')
     this.lists = res.data
   },

@@ -50,11 +50,13 @@
                 <h4>{{ profile.visible_lists.length }} {{ profile.visible_lists.length | pluralize('List') }}</h4>
               </div>
               <div class="panel-body">
-                <div v-if="user" class="mb-20">
-                  <nuxt-link to="/lists/new" class="btn btn-primary">
-                    Create a new board
-                  </nuxt-link>
-                </div>
+                <client-only>
+                  <div v-if="user" class="mb-20">
+                    <nuxt-link to="/lists/new" class="btn btn-primary">
+                      Create a new board
+                    </nuxt-link>
+                  </div>
+                </client-only>
 
                 <div v-for="list in profile.visible_lists" :key="list.id" class="list-item-short">
                   <div class="lis-title">
