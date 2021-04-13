@@ -105,7 +105,7 @@ export default {
     },
 
     update () {
-      if (!this.editContent) { return }
+      if (! this.editContent) { return }
 
       this.updating = true
       axios.put(`/posts/${this.post.id}`, {

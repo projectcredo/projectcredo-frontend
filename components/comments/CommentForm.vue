@@ -54,9 +54,9 @@ export default {
       let request
 
       if (this.type === 'edit') {
-        request = axios.put(`/comments/${this.comment.id}`, pick(data, ['comment.content', 'comment.commentable_type']))
+        request = axios.put(`/api/comments/${this.comment.id}`, pick(data, ['comment.content', 'comment.commentable_type']))
       } else {
-        request = axios.post('/comments', data)
+        request = axios.post('/api/comments', data)
       }
 
       request.then((response) => {

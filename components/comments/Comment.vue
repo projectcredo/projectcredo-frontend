@@ -98,7 +98,7 @@ export default {
 
       this.removing = true
       try {
-        axios.delete(`/comments/${this.comment.id}`)
+        axios.delete(`/api/comments/${this.comment.id}`)
         this.$emit('deleted')
       } catch (e) {
         //

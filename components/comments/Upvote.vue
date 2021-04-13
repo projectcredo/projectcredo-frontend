@@ -16,17 +16,17 @@ export default {
 
   methods: {
     submit () {
-      const url = `/comments/${this.comment.id}/vote`
+      const url = '/api/votes'
       let request
 
       if (this.comment.voted) {
-        request = axios.delete(url, { data: { id: this.comment.id } })
+        request = axios.delete(url, { params: { type: 'comment', id: this.comment.id } })
       } else {
-        request = axios.post(url, { id: this.comment.id })
+        request = axios.post(url, { type: 'comment', id: this.comment.id })
       }
 
       request.then((response) => {
-        this.$eventHub.$emit('vote-comment', Object.assign({}, response.data))
+        this.$eventHub.$emit('vote-comment', Object.assign({ id: this.comment.id }, response.data))
       })
         .catch(e => (console.error(e)))
     },

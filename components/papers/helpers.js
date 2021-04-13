@@ -3,7 +3,7 @@ export const citeText = (paper) => {
   let year = ''
   let pub = ''
 
-  if (!paper) { return '[not found]' }
+  if (! paper) { return '[not found]' }
 
   if (paper.authors.length > 0) {
     mainAuthor = paper.authors[0].family_name
@@ -28,7 +28,7 @@ export const citeText = (paper) => {
 }
 
 export const getPaper = (list, id) => {
-  if (!id || !list) { return null }
+  if (! id || ! list) { return null }
   id = parseInt(id)
   let paper
 

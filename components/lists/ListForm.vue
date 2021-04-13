@@ -80,6 +80,12 @@ export default {
   },
 
   watch: {
+    value (val) {
+      if (this.form !== val) {
+        this.form = { ...this.value }
+      }
+    },
+
     form: {
       deep: true,
       handler (val) {
@@ -90,13 +96,16 @@ export default {
 
   mounted () {
     jQuery('[data-toggle="popover"]').popover()
+    this.form = { ...this.value }
   },
 
   methods: {
     async removeAttachment (type) {
       try {
-        const res = await axios.delete(`/api/lists/remove-attachment/${type}`)
-        this.setForm(res.data)
+        await axios.delete(`/api/lists/remove-attachment/${type}`,
+          { params: { username: this.list.owner.username, slug: this.list.slug } },
+        )
+        this.$emit('removed-attachment', type)
       } catch (e) {
         console.error(e) // eslint-disable-line
       }

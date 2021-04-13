@@ -203,7 +203,7 @@ export default {
     },
 
     abstractImported () {
-      return !this.paper.abstract_editable && this.hasAbstract
+      return ! this.paper.abstract_editable && this.hasAbstract
     },
   },
 

@@ -9,11 +9,13 @@
         <list :list="list" :current-user="user" />
       </div>
       <div class="col-md-4">
-        <div class="edit-section">
-          <client-only>
-            <a v-if="user" href="" class="edit-list-btn">Edit this board</a>
-          </client-only>
-        </div>
+        <client-only>
+          <div v-if="user && user.id === list.owner.id" class="edit-section">
+            <nuxt-link :to="`/${list.owner.username}/${list.slug}/edit`" class="edit-list-btn">
+              Edit this board
+            </nuxt-link>
+          </div>
+        </client-only>
 
         <div class="list-section">
           <div class="list-section-h3">
@@ -37,8 +39,8 @@
 <script>
 import axios from 'axios'
 import { mapState } from 'vuex'
-import List from '../../components/lists/List'
-import Comments from '../../components/comments/Comments'
+import List from '../../../components/lists/List'
+import Comments from '../../../components/comments/Comments'
 
 export default {
   components: { Comments, List },

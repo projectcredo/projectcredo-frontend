@@ -63,9 +63,9 @@ export default {
     },
 
     toggleVote (voteable) {
-      if (!this.signedIn) {
+      if (! this.signedIn) {
         window.location.href = '/users/sign_in'
-      } else if (!this.isLoading) {
+      } else if (! this.isLoading) {
         this.isLoading = true
         if (voteable.voted) {
           this.unvote(voteable)

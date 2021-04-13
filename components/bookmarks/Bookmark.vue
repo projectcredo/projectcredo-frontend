@@ -35,8 +35,8 @@ export default {
           type: this.type,
         },
         success: () => {
-          this.bookmarkable.bookmarked = true
-          this.bookmarkable.bookmarks_count = this.bookmarkable.bookmarks_count + 1
+          this.bookmarkable.bookmarked = true // eslint-disable-line
+          this.bookmarkable.bookmarks_count = this.bookmarkable.bookmarks_count + 1 // eslint-disable-line
           this.isLoading = false
         },
       })
