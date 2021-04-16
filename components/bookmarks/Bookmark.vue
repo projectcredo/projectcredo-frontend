@@ -16,6 +16,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   props: ['bookmarkable', 'type', 'signedIn'],
 
@@ -26,49 +28,38 @@ export default {
   },
 
   methods: {
-    bookmark () {
-      $.ajax({
-        url: '/bookmarks.json',
-        type: 'POST',
-        data: {
+    async bookmark () {
+      await axios.post('/api/bookmarks', {
+        id: this.bookmarkable.id,
+        type: this.type,
+      })
+      this.bookmarkable.bookmarked = true // eslint-disable-line
+      this.bookmarkable.bookmarks_count = this.bookmarkable.bookmarks_count + 1 // eslint-disable-line
+    },
+
+    async unbookmark () {
+      await axios.delete('/api/bookmarks', {
+        params: {
           id: this.bookmarkable.id,
           type: this.type,
         },
-        success: () => {
-          this.bookmarkable.bookmarked = true // eslint-disable-line
-          this.bookmarkable.bookmarks_count = this.bookmarkable.bookmarks_count + 1 // eslint-disable-line
-          this.isLoading = false
-        },
       })
+      this.bookmarkable.bookmarked = false // eslint-disable-line
+      this.bookmarkable.bookmarks_count = this.bookmarkable.bookmarks_count - 1 // eslint-disable-line
     },
 
-    unbookmark () {
-      $.ajax({
-        url: '/bookmarks.json',
-        type: 'DELETE',
-        data: {
-          id: this.bookmarkable.id,
-          type: this.type,
-        },
-        success: () => {
-          this.bookmarkable.bookmarked = false // eslint-disable-line
-          this.bookmarkable.bookmarks_count = this.bookmarkable.bookmarks_count - 1 // eslint-disable-line
-          this.isLoading = false
-        },
-      })
-    },
-
-    toggleBookmark () {
+    async toggleBookmark () {
       if (! this.signedIn) {
         window.location.href = '/users/sign_in'
       } else if (! this.isLoading) {
         this.isLoading = true
 
         if (this.bookmarkable.bookmarked) {
-          this.unbookmark()
+          await this.unbookmark()
         } else {
-          this.bookmark()
+          await this.bookmark()
         }
+        this.isLoading = false
       }
     },
   },

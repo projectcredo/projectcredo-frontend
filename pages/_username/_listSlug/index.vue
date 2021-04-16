@@ -6,7 +6,7 @@
 
     <div v-if="list.id" class="row list-show">
       <div class="col-md-8">
-        <list :list="list" :current-user="user" />
+        <list :list="list" />
       </div>
       <div class="col-md-4">
         <client-only>

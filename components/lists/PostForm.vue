@@ -2,7 +2,7 @@
   <div class="list-post-form">
     <textarea ref="textarea" v-model="content" class="lpf-textarea" placeholder="What are you reading?" :disabled="loading" />
     <url-preview v-if="url" :info="urlInfo" :loading="loadingUrlInfo" @checked="(c) => checkedPapers = c" />
-    <button class="btn btn-primary" :disabled="loadingUrlInfo || loading || ! this.content" @click="submit">
+    <button class="btn btn-primary" :disabled="loadingUrlInfo || loading || ! content" @click="submit">
       <span v-if="loading">Posting...</span>
       <span v-else>Post</span>
     </button>
@@ -19,11 +19,13 @@ import autosize from 'autosize'
 import UrlPreview from './UrlPreview'
 
 export default {
-
   components: {
     UrlPreview,
   },
-  props: ['list'],
+
+  props: {
+    list: { type: Object, required: true },
+  },
 
   data () {
     return {
@@ -71,13 +73,13 @@ export default {
 
     loadUrlInfo () {
       this.loadingUrlInfo = true
-      axios.post('/posts/load-open-graph', { url: this.url })
+      axios.post('/api/posts/load-open-graph', { url: this.url })
         .then((res) => {
           this.urlInfo = res.data
         })
         .catch((err) => {
           this.url = ''
-          console.log(err)
+          console.error(err) // eslint-disable-line
         })
         .then(() => (this.loadingUrlInfo = false))
     },
@@ -86,7 +88,7 @@ export default {
       if (! this.content) { return }
 
       this.loading = true
-      axios.post('/posts', {
+      axios.post('/api/posts', {
         list_id: this.list.id,
         post: { content: this.content },
         article: this.article,
@@ -95,9 +97,19 @@ export default {
           this.$emit('post-created', res.data)
           this.content = ''
           this.url = ''
+
+          this.$notify({
+            title: 'Success',
+            text: 'Post was created',
+            type: 'info',
+          })
         })
         .catch((err) => {
-          alert(err.message)
+          this.$notify({
+            title: 'Error',
+            text: err.message,
+            type: 'error',
+          })
         })
         .then(() => (this.loading = false))
     },

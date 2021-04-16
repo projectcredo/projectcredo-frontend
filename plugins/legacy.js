@@ -37,20 +37,6 @@ if (process.client) {
   })
 
   /*
-   * Read notifications
-   */
-  jQuery(function ($) {
-    $(document).on('show.bs.dropdown', function () {
-      if ($('a.dropdown-toggle').hasClass('unread-notifications')) {
-        $.ajax({
-          type: 'GET',
-          url: '/read_notifications.js',
-        })
-      }
-    })
-  })
-
-  /*
    * References
    */
   jQuery(function ($) {

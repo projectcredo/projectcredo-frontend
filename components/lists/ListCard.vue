@@ -4,8 +4,12 @@
       <div class="panel panel-default">
         <div class="panel-body">
           <div class="list-title">
-            <a :href="`/${list.owner}/${list.slug}`">{{ list.name }}</a>
-            <a :href="`/${list.owner}`" class="timestamp">created by {{ list.owner }}</a>
+            <nuxt-link :to="`/${list.owner}/${list.slug}`">
+              {{ list.name }}
+            </nuxt-link>
+            <nuxt-link :to="`/${list.owner}`" class="timestamp">
+              created by {{ list.owner }}
+            </nuxt-link>
           </div>
           <div>
             {{ list.description | truncate(300) }}
@@ -20,8 +24,8 @@
               <div class="col-md-1" :class="activity.type" />
               <div class="col-md-11">
                 <a v-if="activity.type === 'added'" :href="activity.addable_href">{{ activity.addable | truncate(150) }}</a>
-                <span v-if="activity.type == 'commented'">"{{ activity.addable | truncate(150) }}"</span>
-                <span v-if="activity.type == 'created'">This board was created!</span>
+                <span v-if="activity.type === 'commented'">"{{ activity.addable | truncate(150) }}"</span>
+                <span v-if="activity.type === 'created'">This board was created!</span>
                 <div class="timestamp">
                   {{ activity.user }}
                   {{ activity.type }}

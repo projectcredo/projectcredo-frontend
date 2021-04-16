@@ -3,9 +3,11 @@
     <div class="list-summary-title">
       Summary
     </div>
-    <a v-if="list.can_update && ! editing" href="#" class="pull-right" :disabled="submitting" @click.prevent="edit"><i
-      class="fa fa-pencil"
-    /></a>
+    <client-only>
+      <a v-if="user && list.user_id === user.id && ! editing" href="#" class="pull-right" :disabled="submitting" @click.prevent="edit"><i
+        class="fa fa-pencil"
+      /></a>
+    </client-only>
     <div v-if="editing" class="clearfix">
       <div
         ref="content"
@@ -45,6 +47,7 @@
 
 <script>
 import axios from 'axios'
+import { mapState } from 'vuex'
 import SummaryContent from '../summaries/SummaryContent'
 import CitePaperModal from '../summaries/CitePaperModal'
 import { citeText, getPaper } from '../papers/helpers'
@@ -67,6 +70,10 @@ export default {
   },
 
   computed: {
+    ...mapState({
+      user: s => s.auth.user,
+    }),
+
     editContentParsed () {
       const text = this.editContent.replace(/\n/gi, '<br>')
 
@@ -110,12 +117,21 @@ export default {
         summary: { content: this.editContent },
       }
 
-      ;(this.summary ? axios.put(`/summaries/${this.summary.id}`, data) : axios.post('/summaries', data))
+      ;(this.summary ? axios.put(`/api/summaries/${this.summary.id}`, data) : axios.post('/api/summaries', data))
         .then((res) => {
           this.summary ? this.$emit('summary-updated', res.data) : this.$emit('summary-created', res.data)
+          this.$notify({
+            title: 'Success',
+            text: 'Summary was ' + (this.summary ? 'updated' : 'created'),
+            type: 'info',
+          })
         })
         .catch((err) => {
-          alert(err.message)
+          this.$notify({
+            title: 'Error',
+            text: err.message,
+            type: 'error',
+          })
         })
         .then(() => {
           this.submitting = false

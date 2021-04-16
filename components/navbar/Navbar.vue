@@ -54,17 +54,11 @@
           </li>
         </ul>
 
-        TODO notifications
-
         <client-only>
           <ul v-if="user" class="nav navbar-nav navbar-right">
+            <notifications />
             <li class="dropdown">
-              <a
-                data-toggle="dropdown"
-                href="javascript:void(0);"
-                class="navbar-avatar dropdown-toggle"
-                title="<%= current_user.username %>"
-              >
+              <a data-toggle="dropdown" href="javascript:void(0);" class="navbar-avatar dropdown-toggle" :title="user.username">
                 <span class="avatar-round-image"><img :src="user.avatar.thumb" alt=""></span>
                 <span class="hidden-sm hidden-md hidden-lg">{{ user.username }}</span>
                 <i class="caret" />
@@ -134,8 +128,11 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
+import Notifications from './Notifications'
 
 export default {
+  components: { Notifications },
+
   computed: {
     ...mapState({
       user: s => s.auth.user,

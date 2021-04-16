@@ -9,7 +9,7 @@
           {{ list.name }}
         </span>
         <client-only>
-          <span v-if="currentUser" class="list-title-star">
+          <span v-if="user" class="list-title-star">
             <i
               v-if="! pinIsLoading"
               title="Pin / unpin the list"
@@ -42,7 +42,9 @@
     <div class="list-date">
       asked {{ list.created_at | date('M/D/YYYY') }}, updated {{ list.updated_at | date('M/D/YYYY') }}
     </div>
-    <post-form v-if="list.can_update" :list="list" @post-created="postCreated" />
+    <client-only>
+      <post-form v-if="user && list.user_id === user.id" :list="list" @post-created="postCreated" />
+    </client-only>
 
     <list-summary
       :summary="summaries[0]"
@@ -87,7 +89,7 @@
           :key="post.id"
           :list="list"
           :post="post"
-          :current-user="currentUser"
+          :current-user="user"
           @select-paper="selectPaper"
           @post-updated="postUpdated"
           @post-deleted="postDeleted"
@@ -95,12 +97,13 @@
       </ul>
     </div>
 
-    <paper-modal :paper="selectedPaper" :list="list" :current-user="currentUser" :show="showPaperModal" @hide="showPaperModal = false" />
+    <paper-modal :paper="selectedPaper" :list="list" :current-user="user" :show="showPaperModal" @hide="showPaperModal = false" />
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import { mapState } from 'vuex'
 import ListPost from '../posts/ListPost.vue'
 import PaperModal from '../papers/PaperModal'
 import PostForm from './PostForm'
@@ -114,7 +117,9 @@ export default {
     ListSummary,
   },
 
-  props: ['list', 'currentUser'],
+  props: {
+    list: { type: Object, required: true },
+  },
 
   data () {
     return {
@@ -130,6 +135,10 @@ export default {
   },
 
   computed: {
+    ...mapState({
+      user: s => s.auth.user,
+    }),
+
     displayedListDesc () {
       return this.$options.filters.truncate(this.list.description, 350, this.listDescTruncated)
     },

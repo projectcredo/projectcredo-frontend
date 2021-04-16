@@ -1,9 +1,11 @@
 <template>
   <li class="list-post">
     <div class="list-post-author">
-      <a v-if="list.can_update" href="#" class="pull-right" :disabled="deleting" @click.prevent="destroy"><i
-        class="fa fa-trash"
-      /></a>
+      <client-only>
+        <a v-if="user && list.user_id === user.id" href="#" class="pull-right" :disabled="deleting" @click.prevent="destroy"><i
+          class="fa fa-trash"
+        /></a>
+      </client-only>
       <div class="lpa-avatar">
         <a :href="post.user.url"><img :src="post.user.avatar_thumb" alt=""></a>
       </div>
@@ -15,9 +17,11 @@
       </div>
     </div>
     <div class="list-post-content">
-      <a v-if="list.can_update && ! edit" href="#" class="pull-right" @click.prevent="edit = true"><i
-        class="fa fa-pencil"
-      /></a>
+      <client-only>
+        <a v-if="user && list.user_id === user.id && ! edit" href="#" class="pull-right" @click.prevent="edit = true"><i
+          class="fa fa-pencil"
+        /></a>
+      </client-only>
       <div v-if="edit">
         <textarea v-model="editContent" class="form-control mb-5" :disabled="updating" />
         <div class="text-right">
@@ -49,7 +53,9 @@
             {{ article.source }}
           </div>
           <div class="lpar-bookmarks">
-            <bookmark :bookmarkable="article" :type="'Article'" :signed-in="!! currentUser" />
+            <client-only>
+              <bookmark :bookmarkable="article" :type="'Article'" :signed-in="!! user" />
+            </client-only>
           </div>
         </div>
       </div>
@@ -61,7 +67,7 @@
           v-for="paper in article.papers"
           :key="paper.id"
           :paper="paper"
-          :current-user="currentUser"
+          :current-user="user"
           @select-paper="selectPaper"
         />
       </div>
@@ -71,6 +77,7 @@
 
 <script>
 import axios from 'axios'
+import { mapState } from 'vuex'
 import PostPaper from '../papers/PostPaper.vue'
 import Bookmark from '../bookmarks/Bookmark.vue'
 
@@ -80,7 +87,7 @@ export default {
     PostPaper,
     Bookmark,
   },
-  props: ['list', 'post', 'currentUser'],
+  props: ['list', 'post'],
 
   data () {
     return {
@@ -92,7 +99,9 @@ export default {
   },
 
   computed: {
-    //
+    ...mapState({
+      user: s => s.auth.user,
+    }),
   },
 
   mounted () {
@@ -108,12 +117,13 @@ export default {
       if (! this.editContent) { return }
 
       this.updating = true
-      axios.put(`/posts/${this.post.id}`, {
+      axios.put(`/api/posts/${this.post.id}`, {
         post: { content: this.editContent },
       })
         .then((res) => {
           this.$emit('post-updated', res.data)
           this.content = ''
+          this.$notify({ title: 'Success', text: 'Post was updated', type: 'info' })
         })
         .catch((err) => {
           alert(err.message)
@@ -125,10 +135,12 @@ export default {
     },
 
     destroy () {
+      if (! confirm('Are you sure?')) { return }
       this.deleting = true
-      axios.delete(`/posts/${this.post.id}`)
+      axios.delete(`/api/posts/${this.post.id}`)
         .then((res) => {
           this.$emit('post-deleted', this.post)
+          this.$notify({ title: 'Success', text: 'Post was deleted', type: 'info' })
         })
         .catch((err) => {
           alert(err.message)
