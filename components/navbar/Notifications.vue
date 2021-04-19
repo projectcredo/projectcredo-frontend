@@ -13,16 +13,7 @@
         <span class="bold text-lg">Unread Notifications</span>
       </div>
       <div class="notifications-wrapper">
-        <div v-for="notification in notifications" :key="notification.id">
-          <div class="notification-item unread">
-            <b>{{ notification.activity.activity }}</b>
-            {{ notification.activity.type }} {{ notification.activity.added }} {{ notification.activity.preposition }}
-            <div class="notification-time">
-              {{ fromNow(notification.created_at) }}
-            </div>
-          </div>
-          <div class="notification-divider" />
-        </div>
+        <notification-item v-for="notification in notifications" :key="notification.id" :notification="notification" />
 
         <div v-if="! notifications.length" class="notification-item">
           Welcome to Project Credo. No new activity yet!
@@ -42,10 +33,13 @@
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import axios from 'axios'
+import NotificationItem from './NotificationItem'
 
 dayjs.extend(relativeTime)
 
 export default {
+  components: { NotificationItem },
+
   data: () => ({
     notifications: [],
   }),
@@ -61,12 +55,8 @@ export default {
     },
 
     async readAll () {
-      await axios.post('/api/read_notifications')
+      await axios.post('/api/read-notifications')
       this.notifications = []
-    },
-
-    fromNow (date) {
-      return dayjs(date).fromNow()
     },
   },
 }
