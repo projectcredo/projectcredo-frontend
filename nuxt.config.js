@@ -69,6 +69,7 @@ export default {
 
   publicRuntimeConfig: {
     apiUrl: process.env.API_URL,
+    facebookAppId: process.env.FACEBOOK_APP_ID,
   },
 
   privateRuntimeConfig: {},

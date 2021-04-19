@@ -6,7 +6,7 @@
     <div class="row">
       <div class="col-md-8 col-md-push-2">
         <div class="form-group">
-          <a role="button" class="btn btn-fb">Sign in with Facebook</a>
+          <facebook-signin />
           <a role="button" class="btn btn-google">Sign in with Google</a>
         </div>
 
@@ -54,8 +54,10 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
+import FacebookSignin from '../../components/auth/FacebookSignin'
 
 export default {
+  components: { FacebookSignin },
 
   data: () => ({
     form: {
