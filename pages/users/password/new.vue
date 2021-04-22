@@ -57,6 +57,7 @@ export default {
           text: res.data.message,
           type: 'info',
         })
+        this.form.email = ''
       } catch (e) {
         if (e.response && e.response.status === 401) {
           this.errors = (e.response.data && e.response.data.errors) || []

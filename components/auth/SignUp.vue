@@ -64,6 +64,8 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 import isObject from 'lodash/isObject'
+import { VueReCaptcha } from 'vue-recaptcha-v3'
+import Vue from 'vue'
 
 export default {
 
@@ -75,6 +77,7 @@ export default {
       password_confirmation: '',
       confirm_success_url: '',
     },
+    token: '',
     errors: [],
   }),
 
@@ -86,6 +89,7 @@ export default {
 
   mounted () {
     this.form.confirm_success_url = window.location.href
+    Vue.use(VueReCaptcha, { siteKey: this.$config.recaptchaKey, autoHideBadge: true })
   },
 
   methods: {
@@ -93,11 +97,20 @@ export default {
       signUp: 'auth/signUp',
     }),
 
+    async recaptcha () {
+      await this.$recaptchaLoaded()
+      this.token = await this.$recaptcha('login')
+    },
+
     async submit () {
       if (this.loading) { return }
+      await this.recaptcha()
+
       this.errors = []
+      const data = { ...this.form }
+      data['g-recaptcha-response-data'] = { login: this.token }
       try {
-        await this.signUp(this.form)
+        await this.signUp(data)
         this.$router.replace('/')
       } catch (e) {
         if (e.response && e.response.status === 422) {
