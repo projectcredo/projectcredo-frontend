@@ -82,7 +82,7 @@ export default {
 
   methods: {
     async likeList (list) {
-      await axios.post('/api/votes', { id: list.id })
+      await axios.post('/api/votes', { id: list.id, type: 'list' })
 
       list.liked = true
       list.likes = list.likes + 1
@@ -91,7 +91,7 @@ export default {
 
     async unlikeList (list) {
       await axios.delete('/api/votes', {
-        params: { id: list.id },
+        params: { id: list.id, type: 'list' },
       })
 
       list.liked = false
