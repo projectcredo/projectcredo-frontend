@@ -68,5 +68,20 @@ export default {
       user: s => s.auth.user,
     }),
   },
+
+  head () {
+    if (! this.list.id) { return {} }
+
+    const title = `${this.$config.name} | ${this.list.owner.username} | ${this.list.name}`
+    return {
+      title,
+      meta: [
+        { hid: 'description', name: 'description', content: this.list.description },
+        { hid: 'og:title', name: 'og:title', content: title },
+        { hid: 'og:description', name: 'og:description', content: this.list.description },
+        { hid: 'og:author', name: 'og:author', content: this.list.owner.username },
+      ],
+    }
+  },
 }
 </script>

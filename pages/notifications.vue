@@ -53,5 +53,15 @@ export default {
       return dayjs(date).fromNow()
     },
   },
+
+  head () {
+    const title = `${this.$config.name} | My Notifications`
+    return {
+      title,
+      meta: [
+        { hid: 'og:title', name: 'og:title', content: title },
+      ],
+    }
+  },
 }
 </script>

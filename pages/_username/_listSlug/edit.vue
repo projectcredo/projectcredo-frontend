@@ -122,5 +122,15 @@ export default {
       this.loading = false
     },
   },
+
+  head () {
+    const title = `${this.$config.name} | Edit | ${this.list.name}`
+    return {
+      title,
+      meta: [
+        { hid: 'og:title', name: 'og:title', content: title },
+      ],
+    }
+  },
 }
 </script>

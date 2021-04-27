@@ -161,5 +161,17 @@ export default {
       user: s => s.auth.user,
     }),
   },
+
+  head () {
+    if (! this.profile) { return {} }
+
+    const title = `${this.$config.name} | ${this.profile.username}`
+    return {
+      title,
+      meta: [
+        { hid: 'og:title', name: 'og:title', content: title },
+      ],
+    }
+  },
 }
 </script>

@@ -12,5 +12,15 @@ import SignUp from '../../components/auth/SignUp'
 
 export default {
   components: { SignUp },
+
+  head () {
+    const title = `${this.$config.name} | Sign Up`
+    return {
+      title,
+      meta: [
+        { hid: 'og:title', name: 'og:title', content: title },
+      ],
+    }
+  },
 }
 </script>

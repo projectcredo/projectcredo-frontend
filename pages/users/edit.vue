@@ -234,5 +234,15 @@ export default {
       }
     },
   },
+
+  head () {
+    const title = `${this.$config.name} | Edit Your Account`
+    return {
+      title,
+      meta: [
+        { hid: 'og:title', name: 'og:title', content: title },
+      ],
+    }
+  },
 }
 </script>

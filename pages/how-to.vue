@@ -254,5 +254,15 @@ export default {
       $('.affix').affix()
     })
   },
+
+  head () {
+    const title = `${this.$config.name} | How To`
+    return {
+      title,
+      meta: [
+        { hid: 'og:title', name: 'og:title', content: title },
+      ],
+    }
+  },
 }
 </script>

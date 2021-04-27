@@ -67,5 +67,15 @@ export default {
       }
     },
   },
+
+  head () {
+    const title = `${this.$config.name} | Forgot your password?`
+    return {
+      title,
+      meta: [
+        { hid: 'og:title', name: 'og:title', content: title },
+      ],
+    }
+  },
 }
 </script>

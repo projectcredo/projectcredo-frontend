@@ -93,5 +93,15 @@ export default {
       }
     },
   },
+
+  head () {
+    const title = `${this.$config.name} | Sign In`
+    return {
+      title,
+      meta: [
+        { hid: 'og:title', name: 'og:title', content: title },
+      ],
+    }
+  },
 }
 </script>

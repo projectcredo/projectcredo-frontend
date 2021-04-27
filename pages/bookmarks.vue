@@ -54,5 +54,15 @@ export default {
       user: s => s.auth.user,
     }),
   },
+
+  head () {
+    const title = `${this.$config.name} | My Bookmarks`
+    return {
+      title,
+      meta: [
+        { hid: 'og:title', name: 'og:title', content: title },
+      ],
+    }
+  },
 }
 </script>
