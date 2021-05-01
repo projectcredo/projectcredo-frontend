@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row how-to">
       <nav class="col-md-3 scrollspy bs-docs-sidebar">
-        <ul class="nav nav-stacked affix">
+        <ul ref="affix" class="nav nav-stacked" data-spy="affix">
           <li><a href="#top">Top</a></li>
 
           <li>
@@ -250,9 +250,10 @@ export default {
   },
 
   mounted () {
-    this.$nextTick(() => {
-      $('.affix').affix()
-    })
+    setTimeout(() => {
+      $('[data-spy="affix"]').affix()
+      $(this.$refs.affix).affix('checkPosition')
+    }, 300)
   },
 
   head () {

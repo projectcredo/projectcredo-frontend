@@ -12,9 +12,6 @@
     </div>
 
     <div class="container">
-      <div v-if="$fetchState.pending" class="text-center">
-        Loading...
-      </div>
       <activity-feed v-if="lists.length" :lists="lists" :signed-in="!! user" />
     </div>
   </div>
@@ -28,17 +25,16 @@ import ActivityFeed from '../components/lists/ActivityFeed'
 export default {
   components: { ActivityFeed },
 
+  async asyncData ({ params, error }) {
+    const res = await axios.get('/api/activities')
+    return {
+      lists: res.data,
+    }
+  },
+
   data: () => ({
     lists: [],
   }),
-
-  async fetch () {
-    console.log('Running fetch')
-    console.log(process.server ? 'On server' : 'On client')
-
-    const res = await axios.get('/api/activities')
-    this.lists = res.data
-  },
 
   computed: {
     ...mapState({

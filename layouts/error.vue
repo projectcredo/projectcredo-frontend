@@ -1,14 +1,14 @@
 <template>
-  <div class="container">
+  <div class="container text-center mt-28">
+    <h1>{{ error.statusCode }}</h1>
     <h1 v-if="error.statusCode === 404">
       Page not found
     </h1>
     <h1 v-else>
       An error occurred
     </h1>
-    <p>{{ error }}</p>
-    <NuxtLink to="/">
-      Home page
+    <NuxtLink to="/" class="mt-5 inline-block">
+      Go to Home page
     </NuxtLink>
   </div>
 </template>

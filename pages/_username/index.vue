@@ -1,8 +1,5 @@
 <template>
   <div class="list-index">
-    <div v-if="$fetchState.pending" class="text-center">
-      Loading...
-    </div>
     <div v-if="profile">
       <div class="user-profile-heading">
         <div class="uph-cover" :style="`background-image: url(${profile.cover && profile.cover.cover})`" />
@@ -146,15 +143,22 @@ import SimpleChart from '../../components/charts/SimpleChart'
 export default {
   components: { SimpleChart },
 
+  async asyncData ({ params, error }) {
+    try {
+      const res = await axios.get(`/api/profile/${params.username}`)
+      return {
+        profile: res.data,
+      }
+    } catch (e) {
+      if (e.response.status === 404) {
+        error({ statusCode: 404, message: 'Not found' })
+      }
+    }
+  },
+
   data: () => ({
     profile: null,
   }),
-
-  async fetch () {
-    const { username } = this.$route.params
-    const res = await axios.get(`/api/profile/${username}`)
-    this.profile = res.data
-  },
 
   computed: {
     ...mapState({

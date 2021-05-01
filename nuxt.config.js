@@ -83,6 +83,10 @@ export default {
     ],
   },
 
+  tailwindcss: {
+    jit: true,
+  },
+
   publicRuntimeConfig: {
     apiUrl: process.env.API_URL,
     facebookAppId: process.env.FACEBOOK_APP_ID,

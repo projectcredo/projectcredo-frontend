@@ -31,6 +31,7 @@ dayjs.extend(relativeTime)
 
 export default {
   components: { NotificationItem },
+
   data: () => ({
     notifications: [],
   }),
