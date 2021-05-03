@@ -3,11 +3,15 @@
     <h2>Notifications</h2>
     <hr>
 
-    <div v-if="$fetchState.pending" class="text-center">
-      Loading...
-    </div>
+    <CircleLoader
+      class="mx-auto mt-20"
+      :loading="$fetchState.pending"
+      color="#64D6BD"
+      size="200"
+      size-unit="px"
+    />
 
-    <div v-else>
+    <div v-if="! $fetchState.pending">
       <div class="notification-index-list">
         <div>
           <notification-item v-for="notification in notifications" :key="notification.id" :notification="notification" />
@@ -25,12 +29,13 @@ import axios from 'axios'
 import { mapState } from 'vuex'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import { CircleLoader } from '@saeris/vue-spinners'
 import NotificationItem from '../components/navbar/NotificationItem'
 
 dayjs.extend(relativeTime)
 
 export default {
-  components: { NotificationItem },
+  components: { NotificationItem, CircleLoader },
 
   data: () => ({
     notifications: [],

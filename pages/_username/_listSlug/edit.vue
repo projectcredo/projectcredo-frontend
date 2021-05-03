@@ -1,9 +1,13 @@
 <template>
   <div class="container">
-    <div v-if="$fetchState.pending" class="text-center">
-      Loading...
-    </div>
-    <div v-else>
+    <CircleLoader
+      class="mx-auto mt-20"
+      :loading="$fetchState.pending"
+      color="#64D6BD"
+      size="200"
+      size-unit="px"
+    />
+    <div v-if="!$fetchState.pending">
       <h2>
         <nuxt-link :to="`/${list.owner.username}/${list.slug}`">
           {{ list.name }}
@@ -35,10 +39,11 @@
 <script>
 import axios from 'axios'
 import { mapState } from 'vuex'
+import { CircleLoader } from '@saeris/vue-spinners'
 import ListForm from '../../../components/lists/ListForm'
 
 export default {
-  components: { ListForm },
+  components: { ListForm, CircleLoader },
 
   data: () => ({
     list: {},

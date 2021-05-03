@@ -3,11 +3,15 @@
     <h2>My Bookmarks</h2>
     <hr>
 
-    <div v-if="$fetchState.pending" class="text-center">
-      Loading...
-    </div>
+    <CircleLoader
+      class="mx-auto mt-20"
+      :loading="$fetchState.pending"
+      color="#64D6BD"
+      size="200"
+      size-unit="px"
+    />
 
-    <div v-else>
+    <div v-if="! $fetchState.pending">
       <p v-if="! bookmarks.length">
         No don't have any bookmarks yet.
       </p>
@@ -36,8 +40,11 @@
 <script>
 import axios from 'axios'
 import { mapState } from 'vuex'
+import { CircleLoader } from '@saeris/vue-spinners'
 
 export default {
+  components: { CircleLoader },
+
   data: () => ({
     bookmarks: [],
   }),

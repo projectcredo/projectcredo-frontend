@@ -11,7 +11,7 @@
       <img src="~assets/images/tag.png" class="img-thumbnail thumbnail-no-border">
     </div>
 
-    <div class="container">
+    <div class="container mt-10">
       <activity-feed v-if="lists.length" :lists="lists" :signed-in="!! user" />
     </div>
   </div>
