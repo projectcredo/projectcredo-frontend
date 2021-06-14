@@ -119,6 +119,7 @@ export default {
           throw e
         }
       }
+      this.loading = false
     },
   },
 }

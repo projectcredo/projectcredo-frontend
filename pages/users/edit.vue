@@ -169,7 +169,7 @@ export default {
     }),
 
     setForm (data) {
-      this.form = pick(data, ['first_name', 'last_name', 'username', 'email', 'about', 'country', 'city', 'website'])
+      this.form = Object.assign(this.form, pick(data, ['first_name', 'last_name', 'username', 'email', 'about', 'country', 'city', 'website']))
     },
 
     validate () {
@@ -185,14 +185,20 @@ export default {
       this.loading = true
       this.errors = []
       if (! this.validate()) {
-        return this.$notify({
+        this.$notify({
           title: 'Errors',
           text: 'There are errors in the form',
           type: 'error',
         })
+        this.loading = false
+        return
       }
 
       const data = { ...this.form, avatar: this.avatar, cover: this.cover }
+      if (data.password === '') {
+        delete data.password
+        delete data.password_confirmation
+      }
 
       const formData = new FormData()
       for (const [key, value] of Object.entries(data)) {
