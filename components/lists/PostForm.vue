@@ -80,6 +80,11 @@ export default {
         .catch((err) => {
           this.url = ''
           console.error(err) // eslint-disable-line
+          this.$notify({
+            title: 'Error',
+            text: 'Unable to fetch link',
+            type: 'error',
+          })
         })
         .then(() => (this.loadingUrlInfo = false))
     },
