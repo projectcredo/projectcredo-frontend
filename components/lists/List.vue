@@ -173,9 +173,9 @@ export default {
       this.pinIsLoading = true
       let request
       if (this.list.pinned) {
-        request = axios.delete(`/pins/${this.list.slug}.json`, { id: this.list.slug })
+        request = axios.delete(`/api/pins/${this.list.id}.json`)
       } else {
-        request = axios.post('/pins.json', { id: this.list.slug })
+        request = axios.post('/api/pins.json', { id: this.list.id })
       }
       request.then(() => {
         this.list.pins = this.list.pins + (this.list.pinned ? -1 : 1) // eslint-disable-line

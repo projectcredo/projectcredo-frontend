@@ -21,6 +21,7 @@
     "autosize": "^4.0.2",
     "axios": "^0.21.1",
     "bootstrap-sass": "^3.4.1",
+    "cookie-universal-nuxt": "^2.1.5",
     "core-js": "^3.9.1",
     "d3": "^6.6.2",
     "dayjs": "^1.10.4",

@@ -15,14 +15,18 @@ export const actions = {
     commit('SIGNIN')
     try {
       const res = await axios.post('/api/auth/sign_in', form)
-      commit('SIGNIN_OK', {
-        user: res.data,
+      const tokenData = {
         token: res.headers['access-token'],
         client: res.headers.client,
         expiry: res.headers.expiry,
         uid: res.headers.uid,
         tokenType: res.headers['token-type'],
+      }
+      commit('SIGNIN_OK', {
+        user: res.data,
+        ...tokenData,
       })
+      this.$cookies.set('auth', tokenData)
     } catch (e) {
       commit('SIGNIN_ERR')
       throw e
@@ -33,14 +37,18 @@ export const actions = {
     commit('SIGNIN')
     try {
       const res = await axios.post('/api/auth', form)
-      commit('SIGNIN_OK', {
-        user: res.data,
+      const tokenData = {
         token: res.headers['access-token'],
         client: res.headers.client,
         expiry: res.headers.expiry,
         uid: res.headers.uid,
         tokenType: res.headers['token-type'],
+      }
+      commit('SIGNIN_OK', {
+        user: res.data,
+        ...tokenData,
       })
+      this.$cookies.set('auth', tokenData)
     } catch (e) {
       commit('SIGNIN_ERR')
       throw e
@@ -51,13 +59,16 @@ export const actions = {
     commit('SIGNIN')
     try {
       const res = await axios.get('/api/auth/password/edit', { params: form })
-      commit('SIGNIN_OK', {
-        user: res.data,
+      const tokenData = {
         token: res.headers['access-token'],
         client: res.headers.client,
         expiry: res.headers.expiry,
         uid: res.headers.uid,
         tokenType: res.headers['token-type'],
+      }
+      commit('SIGNIN_OK', {
+        user: res.data,
+        ...tokenData,
       })
     } catch (e) {
       commit('SIGNIN_ERR')
@@ -66,7 +77,21 @@ export const actions = {
   },
 
   signOut ({ commit }) {
+    this.$cookies.remove('auth')
     commit('SIGNOUT_OK')
+  },
+
+  async getUser ({ commit }) {
+    commit('GET_USER')
+    try {
+      const res = await axios.get('/api/auth/me')
+      commit('GET_USER_OK', {
+        user: res.data,
+      })
+    } catch (e) {
+      commit('GET_USER_ERR')
+      throw e
+    }
   },
 }
 
@@ -94,8 +119,38 @@ export const mutations = {
     state.token = null
   },
 
+  GET_USER (state) {
+    state.loading = true
+  },
+
+  GET_USER_OK (state, { user }) {
+    state.loading = false
+    state.user = user
+  },
+
+  GET_USER_ERR (state) {
+    state.loading = false
+  },
+
+  SET_TOKEN (state, data) {
+    state.token = data.token
+    state.client = data.client
+    state.expiry = data.expiry
+    state.uid = data.uid
+    state.tokenType = data.tokenType
+  },
+
   UPDATE_USER (state, user) {
     state.user = user
     state.uid = user.email
+  },
+
+  CLEAR_USER (state) {
+    state.user = null
+    state.token = null
+    state.client = null
+    state.expiry = null
+    state.uid = null
+    state.tokenType = null
   },
 }

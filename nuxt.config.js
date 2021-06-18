@@ -62,7 +62,9 @@ export default {
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: [],
+  modules: [
+    'cookie-universal-nuxt',
+  ],
 
   serverMiddleware: [
     { path: '/system', handler: '~/server-middleware/dev-local-files.js' },
