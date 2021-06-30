@@ -10,18 +10,22 @@ export const state = () => ({
   loading: false,
 })
 
+function getTokenData (headers) {
+  return {
+    token: headers['access-token'],
+    client: headers.client,
+    expiry: headers.expiry,
+    uid: headers.uid,
+    tokenType: headers['token-type'],
+  }
+}
+
 export const actions = {
   async signIn ({ commit }, form) {
     commit('SIGNIN')
     try {
       const res = await axios.post('/api/auth/sign_in', form)
-      const tokenData = {
-        token: res.headers['access-token'],
-        client: res.headers.client,
-        expiry: res.headers.expiry,
-        uid: res.headers.uid,
-        tokenType: res.headers['token-type'],
-      }
+      const tokenData = getTokenData(res.headers)
       commit('SIGNIN_OK', {
         user: res.data,
         ...tokenData,
@@ -37,13 +41,7 @@ export const actions = {
     commit('SIGNIN')
     try {
       const res = await axios.post('/api/auth', form)
-      const tokenData = {
-        token: res.headers['access-token'],
-        client: res.headers.client,
-        expiry: res.headers.expiry,
-        uid: res.headers.uid,
-        tokenType: res.headers['token-type'],
-      }
+      const tokenData = getTokenData(res.headers)
       commit('SIGNIN_OK', {
         user: res.data,
         ...tokenData,
@@ -59,13 +57,7 @@ export const actions = {
     commit('SIGNIN')
     try {
       const res = await axios.get('/api/auth/password/edit', { params: form })
-      const tokenData = {
-        token: res.headers['access-token'],
-        client: res.headers.client,
-        expiry: res.headers.expiry,
-        uid: res.headers.uid,
-        tokenType: res.headers['token-type'],
-      }
+      const tokenData = getTokenData(res.headers)
       commit('SIGNIN_OK', {
         user: res.data,
         ...tokenData,
@@ -152,5 +144,17 @@ export const mutations = {
     state.expiry = null
     state.uid = null
     state.tokenType = null
+  },
+
+  FACEBOOK_LOGIN (state, { user, headers }) {
+    const tokenData = getTokenData(headers)
+    state.user = user
+    state.token = tokenData.token
+    state.client = tokenData.client
+    state.expiry = tokenData.expiry
+    state.uid = tokenData.uid
+    state.tokenType = tokenData.tokenType
+
+    this.$cookies.set('auth', tokenData)
   },
 }

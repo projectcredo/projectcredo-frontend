@@ -1,3 +1,5 @@
+import path from 'path'
+import fs from 'fs'
 import webpack from 'webpack'
 
 require('dotenv').config()
@@ -69,6 +71,13 @@ export default {
   serverMiddleware: [
     { path: '/system', handler: '~/server-middleware/dev-local-files.js' },
   ],
+
+  server: {
+    https: {
+      key: fs.readFileSync(path.resolve(__dirname, 'server.key')),
+      cert: fs.readFileSync(path.resolve(__dirname, 'server.crt')),
+    },
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
