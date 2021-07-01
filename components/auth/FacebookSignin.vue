@@ -11,18 +11,15 @@ export default {
     buttonText: { type: String, default: 'Sign in with Facebook' },
   },
 
-  mounted () {
-    this.loadFacebookSDK(document, 'script', 'facebook-jssdk')
-    this.initFacebook()
-  },
-
   methods: {
     ...mapMutations({
       facebookLogin: 'auth/FACEBOOK_LOGIN',
     }),
 
-    logInWithFacebook () {
+    async logInWithFacebook () {
       const that = this
+      this.loadFacebookSDK(document, 'script', 'facebook-jssdk')
+      await this.initFacebook()
       window.FB.login(async function (response) {
         if (response.authResponse) {
           const res = await axios.post('/api/auth/facebook', response.authResponse)
