@@ -11,25 +11,23 @@ export default {
     buttonText: { type: String, default: 'Sign in with Facebook' },
   },
 
+  mounted () {
+    this.loadFacebookSDK(document, 'script', 'facebook-jssdk')
+    this.initFacebook()
+  },
+
   methods: {
     ...mapMutations({
       facebookLogin: 'auth/FACEBOOK_LOGIN',
     }),
 
-    async logInWithFacebook () {
+    logInWithFacebook () {
       const that = this
-      this.loadFacebookSDK(document, 'script', 'facebook-jssdk')
-      await this.initFacebook()
       window.FB.login(async function (response) {
         if (response.authResponse) {
-          console.log(response.authResponse)
-
           const res = await axios.post('/api/auth/facebook', response.authResponse)
-          console.log(res)
           that.facebookLogin({ user: res.data, headers: res.headers })
-
-          // Now you can redirect the user or do an AJAX request to
-          // a PHP script that grabs the signed request from the cookie.
+          that.$router.replace('/')
         } else {
           alert('User cancelled login or did not fully authorize.')
         }
