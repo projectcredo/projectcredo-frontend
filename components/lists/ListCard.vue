@@ -113,7 +113,7 @@ export default {
     },
 
     async pinList (list) {
-      await axios.post('/api/pins', { id: list.slug })
+      await axios.post('/api/pins', { id: list.id })
 
       list.pinned = true
       list.pins = list.pins + 1
@@ -121,7 +121,7 @@ export default {
     },
 
     async unpinList (list) {
-      await axios.delete(`/api/pins/${list.slug}`, { params: { id: list.slug } })
+      await axios.delete(`/api/pins/${list.id}`, { params: { id: list.id } })
 
       list.pinned = false
       list.pins = list.pins - 1

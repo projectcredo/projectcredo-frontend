@@ -13,6 +13,8 @@ import SignUp from '../../components/auth/SignUp'
 export default {
   components: { SignUp },
 
+  middleware: 'guest',
+
   head () {
     const title = `${this.$config.name} | Sign Up`
     return {

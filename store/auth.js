@@ -20,6 +20,10 @@ function getTokenData (headers) {
   }
 }
 
+function setCookie ($cookies, tokenData) {
+  $cookies.set('auth', tokenData, { secure: true })
+}
+
 export const actions = {
   async signIn ({ commit }, form) {
     commit('SIGNIN')
@@ -30,7 +34,7 @@ export const actions = {
         user: res.data,
         ...tokenData,
       })
-      this.$cookies.set('auth', tokenData)
+      setCookie(this.$cookies, tokenData)
     } catch (e) {
       commit('SIGNIN_ERR')
       throw e
@@ -46,7 +50,7 @@ export const actions = {
         user: res.data,
         ...tokenData,
       })
-      this.$cookies.set('auth', tokenData)
+      setCookie(this.$cookies, tokenData)
     } catch (e) {
       commit('SIGNIN_ERR')
       throw e
@@ -155,6 +159,6 @@ export const mutations = {
     state.uid = tokenData.uid
     state.tokenType = tokenData.tokenType
 
-    this.$cookies.set('auth', tokenData)
+    setCookie(this.$cookies, tokenData)
   },
 }

@@ -59,6 +59,8 @@ import FacebookSignin from '../../components/auth/FacebookSignin'
 export default {
   components: { FacebookSignin },
 
+  middleware: 'guest',
+
   data: () => ({
     form: {
       email: '',

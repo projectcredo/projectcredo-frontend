@@ -1,8 +1,13 @@
+import https from 'https'
 import axios from 'axios'
 
 export default ({ store, $config }) => {
   axios.defaults.baseURL = $config.apiUrl
   axios.defaults.params = {}
+
+  if (process.env.NODE_ENV !== 'production') {
+    axios.defaults.httpsAgent = new https.Agent({ rejectUnauthorized: false })
+  }
 
   // Request interceptor
   axios.interceptors.request.use((request) => {
