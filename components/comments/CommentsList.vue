@@ -1,9 +1,8 @@
 <template>
-  <div class="comments" :class="commentableType">
+  <div class="comments">
     <comment
       v-for="comment in comments"
       :key="comment.id"
-      class="comment"
       :comment="comment"
       :signed-in="signedIn"
       :user-id="userId"

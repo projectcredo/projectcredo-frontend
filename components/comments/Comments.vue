@@ -45,9 +45,6 @@ export default {
     this.$eventHub.$on('reply-comment', this.newComment)
     this.$eventHub.$on('edit-comment', this.editComment)
     this.$eventHub.$on('vote-comment', this.editComment)
-  },
-
-  beforeMount () {
     this.dataComments = merge([], this.comments)
   },
 
