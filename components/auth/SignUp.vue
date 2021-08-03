@@ -3,8 +3,8 @@
     <div class="row">
       <div class="col-md-8 col-md-push-2">
         <div class="form-group">
-          <a role="button" class="btn btn-fb">Sign up with Facebook</a>
-          <a role="button" class="btn btn-google">Sign up with Google</a>
+          <facebook-signin button-text="Sign up with Facebook" />
+          <google-signin button-text="Sign up with Google" />
         </div>
 
         <p>Or</p>
@@ -66,9 +66,11 @@ import { mapActions, mapState } from 'vuex'
 import isObject from 'lodash/isObject'
 import { VueReCaptcha } from 'vue-recaptcha-v3'
 import Vue from 'vue'
+import FacebookSignin from './FacebookSignin'
+import GoogleSignin from './GoogleSignin'
 
 export default {
-
+  components: { GoogleSignin, FacebookSignin },
   data: () => ({
     form: {
       email: '',
@@ -119,7 +121,6 @@ export default {
           throw e
         }
       }
-      this.loading = false
     },
   },
 }

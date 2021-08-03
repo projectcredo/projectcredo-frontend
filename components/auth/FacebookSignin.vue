@@ -13,7 +13,7 @@ export default {
 
   methods: {
     ...mapMutations({
-      facebookLogin: 'auth/FACEBOOK_LOGIN',
+      socialLogin: 'auth/SOCIAL_LOGIN',
     }),
 
     async logInWithFacebook () {
@@ -23,7 +23,7 @@ export default {
       window.FB.login(async function (response) {
         if (response.authResponse) {
           const res = await axios.post('/api/auth/facebook', response.authResponse)
-          that.facebookLogin({ user: res.data, headers: res.headers })
+          that.socialLogin({ user: res.data, headers: res.headers })
           that.$router.replace('/')
         } else {
           alert('User cancelled login or did not fully authorize.')

@@ -101,6 +101,7 @@ export default {
   publicRuntimeConfig: {
     apiUrl: process.env.API_URL,
     facebookAppId: process.env.FACEBOOK_APP_ID,
+    googleClientId: process.env.GOOGLE_CLIENT_ID,
     recaptchaKey: process.env.RECAPTCHA_KEY_V3,
     name,
     description,

@@ -150,7 +150,7 @@ export const mutations = {
     state.tokenType = null
   },
 
-  FACEBOOK_LOGIN (state, { user, headers }) {
+  SOCIAL_LOGIN (state, { user, headers }) {
     const tokenData = getTokenData(headers)
     state.user = user
     state.token = tokenData.token

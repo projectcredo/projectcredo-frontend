@@ -7,7 +7,7 @@
       <div class="col-md-8 col-md-push-2">
         <div class="form-group">
           <facebook-signin />
-          <a role="button" class="btn btn-google">Sign in with Google</a>
+          <google-signin />
         </div>
 
         <p>Or</p>
@@ -55,9 +55,10 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 import FacebookSignin from '../../components/auth/FacebookSignin'
+import GoogleSignin from '../../components/auth/GoogleSignin'
 
 export default {
-  components: { FacebookSignin },
+  components: { GoogleSignin, FacebookSignin },
 
   middleware: 'guest',
 
