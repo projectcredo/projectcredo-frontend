@@ -108,7 +108,7 @@ export default {
       // https://docs.sentry.io/platforms/javascript/guides/vue/configuration/options/
     },
     publishRelease: {
-      org: 'project-credo',
+      org: process.env.SENTRY_ORG,
       project: process.env.SENTRY_PROJECT,
       authToken: process.env.SENTRY_AUTH_TOKEN,
       setCommits: {
