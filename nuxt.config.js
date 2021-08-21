@@ -107,6 +107,14 @@ export default {
       // Add native Sentry config here
       // https://docs.sentry.io/platforms/javascript/guides/vue/configuration/options/
     },
+    publishRelease: {
+      org: 'project-credo',
+      project: process.env.SENTRY_PROJECT,
+      authToken: process.env.SENTRY_AUTH_TOKEN,
+      setCommits: {
+        auto: true, // set by default
+      },
+    },
   },
 
   publicRuntimeConfig: {
