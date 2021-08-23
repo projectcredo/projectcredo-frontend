@@ -23,15 +23,13 @@
         /></a>
       </client-only>
       <div v-if="edit">
-        <textarea v-model="editContent" class="form-control mb-5" :disabled="updating" />
+        <text-editor v-model="editContent" class="form-control mb-5" style="height: auto;" :disabled="updating" />
         <div class="text-right">
           <a href="#" class="text-small" :disabled="updating" @click.prevent="edit = false">Cancel</a>
           <a href="#" class="btn btn-primary btn-sm" :disabled="updating" @click.prevent="update">Save</a>
         </div>
       </div>
-      <div v-if="! edit">
-        {{ post.content }}
-      </div>
+      <div v-if="! edit" class="rich-editor-text" v-html="post.content" />
     </div>
     <div
       v-for="article in post.articles"
@@ -80,10 +78,12 @@ import axios from 'axios'
 import { mapState } from 'vuex'
 import PostPaper from '../papers/PostPaper.vue'
 import Bookmark from '../bookmarks/Bookmark.vue'
+import TextEditor from '../ui/TextEditor'
 
 export default {
 
   components: {
+    TextEditor,
     PostPaper,
     Bookmark,
   },

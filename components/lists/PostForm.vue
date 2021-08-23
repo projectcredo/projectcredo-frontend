@@ -1,8 +1,8 @@
 <template>
   <div class="list-post-form">
-    <textarea ref="textarea" v-model="content" class="lpf-textarea" placeholder="What are you reading?" :disabled="loading" />
+    <text-editor v-model="content" placeholder="What are you reading?" :disabled="loading" />
     <url-preview v-if="url" :info="urlInfo" :loading="loadingUrlInfo" @checked="(c) => checkedPapers = c" />
-    <button class="btn btn-primary" :disabled="loadingUrlInfo || loading || ! content" @click="submit">
+    <button class="btn btn-primary pull-right" :disabled="loadingUrlInfo || loading || ! content" @click="submit">
       <span v-if="loading">Posting...</span>
       <span v-else>Post</span>
     </button>
@@ -11,15 +11,17 @@
 </template>
 
 <script>
-import urlRegex from 'url-regex'
 import debounce from 'lodash/debounce'
 import isEmpty from 'lodash/isEmpty'
 import axios from 'axios'
-import autosize from 'autosize'
+import TextEditor from '../ui/TextEditor'
 import UrlPreview from './UrlPreview'
+
+const URL_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)/
 
 export default {
   components: {
+    TextEditor,
     UrlPreview,
   },
 
@@ -61,12 +63,12 @@ export default {
   },
 
   mounted () {
-    this.$refs.textarea.addEventListener('focus', () => autosize(this.$refs.textarea))
+    // this.$refs.textarea.addEventListener('focus', () => autosize(this.$refs.textarea))
   },
 
   methods: {
     findUrl: debounce(function () {
-      this.content.replace(urlRegex(), (url) => {
+      this.content.replace(URL_REGEX, (url) => {
         if (! this.url) { this.url = url }
       })
     }, 300),
