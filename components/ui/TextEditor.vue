@@ -126,7 +126,7 @@ export default {
     list-style-type: decimal;
   }
 
-  li {
+  ul {
     list-style-type: disc;
   }
 
