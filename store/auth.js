@@ -21,7 +21,7 @@ function getTokenData (headers) {
 }
 
 function setCookie ($cookies, tokenData) {
-  $cookies.set('auth', tokenData, { secure: true })
+  $cookies.set('auth', tokenData, { path: '/', maxAge: 60 * 60 * 24 * 30 })
 }
 
 export const actions = {
@@ -73,11 +73,12 @@ export const actions = {
   },
 
   signOut ({ commit }) {
-    this.$cookies.remove('auth')
+    this.$cookies.remove('auth', { path: '/' })
     commit('SIGNOUT_OK')
   },
 
-  async getUser ({ commit }) {
+  async getUser ({ commit, state }) {
+    if (state.loading) { return }
     commit('GET_USER')
     try {
       const res = await axios.get('/api/auth/me')
@@ -148,6 +149,7 @@ export const mutations = {
     state.expiry = null
     state.uid = null
     state.tokenType = null
+    this.$cookies.remove('auth', { path: '/' })
   },
 
   SOCIAL_LOGIN (state, { user, headers }) {

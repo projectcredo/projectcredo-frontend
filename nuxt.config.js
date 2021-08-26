@@ -9,6 +9,8 @@ const description = 'A collaborative research tool to curate, comment on, and sh
 
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
+  mode: 'universal',
+
   head: {
     title: name,
     htmlAttrs: {
