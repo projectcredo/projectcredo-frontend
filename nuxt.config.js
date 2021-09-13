@@ -69,6 +69,7 @@ export default {
   modules: [
     'cookie-universal-nuxt',
     '@nuxtjs/sentry',
+    'vue-scrollto/nuxt',
   ],
 
   serverMiddleware: [

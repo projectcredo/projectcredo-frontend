@@ -1,52 +1,56 @@
 <template>
   <div class="container">
-    <div class="row how-to">
-      <nav class="col-md-3 scrollspy bs-docs-sidebar">
-        <ul ref="affix" class="nav nav-stacked" data-spy="affix">
-          <li><a href="#top">Top</a></li>
+    <div class="flex how-to">
+      <nav class="md:w-3/12 bs-docs-sidebar">
+        <ul class="nav nav-stacked sticky top-24">
+          <li :class="{active: activeMenu === 'top'}">
+            <a href="#top" @click="scrollTo">Top</a>
+          </li>
 
-          <li>
-            <a href="#create-list">Create a Board</a>
+          <li :class="{active: activeMenu === 'create-list'}">
+            <a href="#create-list" @click="scrollTo">Create a Board</a>
             <ul class="nav">
-              <li><a href="#new-list">New Board</a></li>
-              <li><a href="#name-and-description">Name and Description</a></li>
-              <li><a href="#collaborators">Add Collaborators</a></li>
+              <li><a href="#new-list" @click="scrollTo">New Board</a></li>
+              <li><a href="#name-and-description" @click="scrollTo">Name and Description</a></li>
+              <li><a href="#collaborators" @click="scrollTo">Add Collaborators</a></li>
             </ul>
           </li>
 
-          <li>
-            <a href="#add-papers">Add Papers to a Board</a>
+          <li :class="{active: activeMenu === 'add-papers'}">
+            <a href="#add-papers" @click="scrollTo">Add Papers to a Board</a>
             <ul class="nav">
-              <li><a href="#search-paper">Search</a></li>
-              <li><a href="#add-doi">DOI</a></li>
-              <li><a href="#add-pubmed">Pubmed ID</a></li>
-              <li><a href="#add-url">URL</a></li>
-              <li><a href="#add-paper-info">Additional Paper Data</a></li>
-              <li><a href="#remove-paper">Remove a Paper</a></li>
+              <li><a href="#search-paper" @click="scrollTo">Search</a></li>
+              <li><a href="#add-doi" @click="scrollTo">DOI</a></li>
+              <li><a href="#add-pubmed" @click="scrollTo">Pubmed ID</a></li>
+              <li><a href="#add-url" @click="scrollTo">URL</a></li>
+              <li><a href="#add-paper-info" @click="scrollTo">Additional Paper Data</a></li>
+              <li><a href="#remove-paper" @click="scrollTo">Remove a Paper</a></li>
             </ul>
           </li>
 
-          <li>
-            <a href="#comment-vote-share">Comment, Vote, and Share</a>
+          <li :class="{active: activeMenu === 'comment-vote-share'}">
+            <a href="#comment-vote-share" @click="scrollTo">Comment, Vote, and Share</a>
             <ul class="nav">
-              <li><a href="#comment">Comment</a></li>
-              <li><a href="#vote">Vote</a></li>
-              <li><a href="#share">Share</a></li>
+              <li><a href="#comment" @click="scrollTo">Comment</a></li>
+              <li><a href="#vote" @click="scrollTo">Vote</a></li>
+              <li><a href="#share" @click="scrollTo">Share</a></li>
             </ul>
           </li>
 
-          <li><a href="#get-started">Get Started!</a></li>
+          <li :class="{active: activeMenu === 'get-started'}">
+            <a href="#get-started" @click="scrollTo">Get Started!</a>
+          </li>
         </ul>
       </nav>
 
-      <div class="col-md-9">
-        <h1 id="top">
+      <div ref="content" class="md:w-9/12">
+        <h1 id="top" class="section">
           Project Credo How-To: Collaborative Research
         </h1>
         <p>
           Primary research is the foundation of scientific information.  Around 1.5 million research papers are written annually but finding, understanding, and sharing them remains challenging.  Project Credo's mission is to build a evidence based consensus on a wide range of topics and openly sharing it with the public.  This is a quickstart guide on how to use the site.
         </p>
-        <h2 id="create-list">
+        <h2 id="create-list" class="section">
           Create a Board
         </h2>
         <p>
@@ -89,7 +93,7 @@
           <li>Help moderate comments</li>
         </ul>
         <img src="/images/how-to/collaborators.jpg" class="img-thumbnail">
-        <h2 id="add-papers">
+        <h2 id="add-papers" class="section">
           Add Papers to a Board
         </h2>
         <p>
@@ -174,7 +178,8 @@
           Removing a paper is as simple as clicking the "Remove from board" button.  Only owners of boards, collaborators, or the original poster of the paper can remove a paper from a board.
         </p>
         <img src="/images/how-to/paper-remove.jpg" class="img-thumbnail">
-        <h2 id="comment-vote-share">
+
+        <h2 id="comment-vote-share" class="section">
           Additional Context - Comment, Vote, and Share
         </h2>
         <p>
@@ -207,7 +212,7 @@
         <img src="/images/how-to/share-url.jpg" class="img-thumbnail">
 
         <div class="get-started">
-          <h2 id="get-started">
+          <h2 id="get-started" class="section">
             Get Started!
           </h2>
           <p>
@@ -241,19 +246,63 @@
 
 <script>
 import { mapState } from 'vuex'
+import debounce from 'lodash/debounce'
 
 export default {
+  data: () => ({
+    activeMenu: 'top',
+  }),
+
   computed: {
     ...mapState({
       user: s => s.auth.user,
     }),
   },
 
+  // mounted () {
+  // setTimeout(() => {
+  //   $('[data-spy="affix"]').affix()
+  //   $(this.$refs.affix).affix('checkPosition')
+  // }, 300)
+  // },
+
   mounted () {
-    setTimeout(() => {
-      $('[data-spy="affix"]').affix()
-      $(this.$refs.affix).affix('checkPosition')
-    }, 300)
+    window.addEventListener('scroll', this.checkScroll, { passive: true })
+  },
+
+  beforeDestroy () {
+    window.removeEventListener('scroll', this.checkScroll)
+  },
+
+  methods: {
+    checkScroll: debounce(function () {
+      const els = this.$refs.content.querySelectorAll('.section')
+      for (const el of els) {
+        if (this.isElementInViewPort(el)) {
+          this.activeMenu = el.getAttribute('id')
+          break
+        }
+      }
+    }, 10),
+
+    isElementInViewPort (el) {
+      const rect = el.getBoundingClientRect()
+      const elementTop = rect.top
+      const elementBottom = rect.bottom
+      const scrollPosition = el?.scrollTop || document.body.scrollTop
+      return (
+        elementBottom >= 0 &&
+        elementTop <= document.documentElement.clientHeight &&
+        elementTop + rect.height > elementTop &&
+        elementTop <= elementBottom &&
+        elementTop >= scrollPosition
+      )
+    },
+
+    scrollTo (e) {
+      e.preventDefault()
+      this.$scrollTo(e.target.getAttribute('href'), 1000, { offset: -100 })
+    },
   },
 
   head () {

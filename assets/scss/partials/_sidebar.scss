@@ -24,13 +24,14 @@
 
 /* active & hover links */
 .bs-docs-sidebar .nav>.active>a,
-.bs-docs-sidebar .nav>li>a:hover,
-.bs-docs-sidebar .nav>li>a:focus {
+.bs-docs-sidebar .nav>li>a:hover {
     color: $brand-primary;
     text-decoration: none;
     background-color: transparent;
     border-left-color: $brand-primary;
 }
+
+.bs-docs-sidebar .nav>li>a:focus { background-color: transparent; }
 /* all active links */
 .bs-docs-sidebar .nav>.active>a,
 .bs-docs-sidebar .nav>.active:hover>a,
